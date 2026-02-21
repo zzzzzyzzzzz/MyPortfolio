@@ -1,0 +1,330 @@
+import { useState } from 'react'
+
+const KawaiiPortfolio = () => {
+  const [activeTab, setActiveTab] = useState('intro')
+  const [guestbookEntries, setGuestbookEntries] = useState([
+    { name: 'UNKNOWN_USER', message: 'system running... 0x00A1F', date: '2026-02-20' },
+    { name: 'CyberGhost_99', message: 'I like the scanlines. 信号很好。', date: '2026-02-19' }
+  ])
+  const [newName, setNewName] = useState('')
+  const [newMessage, setNewMessage] = useState('')
+
+  const handleSignGuestbook = (e) => {
+    e.preventDefault()
+    if (!newName.trim() || !newMessage.trim()) return
+
+    const newEntry = {
+      name: newName,
+      message: newMessage,
+      date: new Date().toISOString().split('T')[0]
+    }
+    setGuestbookEntries([newEntry, ...guestbookEntries])
+    setNewName('')
+    setNewMessage('')
+  }
+
+  const tabs = [
+    { id: 'intro', icon: '[i]', label: 'SYS_INFO' },
+    { id: 'blog', icon: '[+]', label: 'DIARY.LOG' },
+    { id: 'photo', icon: '[*]', label: 'IMG_DATA' },
+    { id: 'tech', icon: '[/]', label: 'TECH_DOCS' },
+    { id: 'ta', icon: '[#]', label: 'SHADER_FX' },
+    { id: '3d', icon: '[^]', label: 'MESH_OBJ' },
+    { id: 'guestbook', icon: '[@]', label: 'GUEST_NET' }
+  ]
+
+  return (
+    <div
+      className="min-h-screen p-4 md:p-8 crt bg-[#050508] text-[#c8c8c8] pixel-font relative overflow-hidden"
+      style={{
+        backgroundImage: 'linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px)',
+        backgroundSize: '20px 20px',
+        cursor: 'crosshair'
+      }}
+    >
+      {/* 顶部跑马灯 */}
+      <div className="max-w-6xl mx-auto mb-6 pixel-border overflow-hidden p-2 flex items-center border-y-2 border-y-[#0ff]">
+        <span className="text-xl mr-2 text-[#0ff] animate-pulse">▶</span>
+        <marquee behavior="scroll" direction="left" scrollAmount={6} className="glitch-text text-sm tracking-widest uppercase">
+          [WARNING: LOW RESOLUTION DETECTED] /// Welcome to Localhost:8080 /// Developer & Technical Artist /// NO SIGNAL /// Loading textures... ///
+        </marquee>
+        <span className="text-xl ml-2 text-[#0ff] animate-pulse">◀</span>
+      </div>
+
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
+        {/* 左侧边栏 (Profile) */}
+        <div className="md:col-span-1 space-y-6">
+          <div className="pixel-border p-4 relative">
+            <h2 className="text-center text-lg font-bold text-[#0ff] mb-4 tracking-widest border-b border-[#334] pb-2">_ABOUT.EXE</h2>
+
+            <div className="aspect-square bg-black border-2 border-[#334] mb-4 flex items-center justify-center overflow-hidden relative low-res-filter group cursor-pointer">
+              <div className="text-5xl group-hover:scale-110 transition-transform glitch-text">👁️‍🗨️</div>
+              <div className="absolute bottom-1 right-1 text-xs text-[#0ff] bg-black px-1 border border-[#0ff]">Lv.99</div>
+            </div>
+
+            <div className="text-center mb-4 text-sm text-gray-400">
+              <p className="font-bold text-white glitch-text text-lg mb-1">Tech_Angel_99</p>
+              <p className="text-[#0ff] text-xs">&gt; Dev + Tech Artist</p>
+              <p className="mt-3 text-xs italic text-gray-500">&quot;Lost in the cyberspace...&quot;</p>
+            </div>
+
+            <div className="bg-black border border-[#334] p-3 text-xs text-gray-400 space-y-2 font-mono">
+              <p><span className="text-[#f0f]">STATUS:</span> ONLINE_</p>
+              <p><span className="text-[#f0f]">BGM:</span> Breakcore.mp3</p>
+              <p><span className="text-[#f0f]">PING:</span> 999ms</p>
+              <p><span className="text-[#f0f]">LOC:</span> Sector 0x4B</p>
+            </div>
+
+            <div className="mt-4 flex flex-wrap gap-2 justify-center">
+              <span className="bg-[#001a1a] px-2 py-1 text-[10px] border border-[#0ff] text-[#0ff] uppercase">Unity</span>
+              <span className="bg-[#1a001a] px-2 py-1 text-[10px] border border-[#f0f] text-[#f0f] uppercase">Unreal</span>
+              <span className="bg-[#1a1a00] px-2 py-1 text-[10px] border border-[#ff0] text-[#ff0] uppercase">Shader</span>
+              <span className="bg-[#000] px-2 py-1 text-[10px] border border-[#fff] text-[#fff] uppercase">React</span>
+            </div>
+          </div>
+
+          <div className="pixel-border p-4 text-center bg-black">
+            <h3 className="text-[#f0f] text-sm font-bold mb-3 tracking-widest">NETWORK_LINKS</h3>
+            <ul className="text-xs space-y-3 text-gray-400 uppercase">
+              <li><a href="#" className="hover:text-[#0ff] glitch-hover transition-all">&gt; GitHub_Repo</a></li>
+              <li><a href="#" className="hover:text-[#0ff] glitch-hover transition-all">&gt; ArtStation_DB</a></li>
+              <li><a href="#" className="hover:text-[#0ff] glitch-hover transition-all">&gt; Twitter_Feed</a></li>
+            </ul>
+          </div>
+        </div>
+
+        {/* 右侧主体内容 */}
+        <div className="md:col-span-3">
+          <div className="flex flex-wrap gap-2 mb-6">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex-1 min-w-[110px] py-2 px-2 text-xs font-bold transition-all uppercase tracking-wider ${
+                  activeTab === tab.id
+                    ? 'pixel-border-active text-[#0ff]'
+                    : 'pixel-border text-gray-400 hover:text-white hover:border-gray-400'
+                }`}
+              >
+                <span className="mr-1 opacity-70">{tab.icon}</span> {tab.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="pixel-border min-h-[500px] p-6 relative bg-black">
+            <div className="absolute right-4 bottom-4 text-6xl font-black text-[#ffffff05] pointer-events-none select-none">
+              {activeTab.toUpperCase()}
+            </div>
+
+            {activeTab === 'intro' && (
+              <div className="animate-fade-in">
+                <h1 className="text-2xl font-bold mb-6 flex items-center glitch-text border-b border-[#334] pb-2 uppercase tracking-widest">
+                  &gt; Initialize_User_Profile
+                </h1>
+                <div className="bg-[#050508] p-5 border border-[#334] mb-8 text-gray-300 leading-loose text-sm">
+                  <p className="mb-4">
+                    <span className="text-[#0ff]">User Found.</span><br />
+                    你好。我是一名 <strong className="text-white">Developer</strong> 兼 <strong className="text-white">Technical Artist</strong>。<br />
+                    致力于在低像素与高保真之间寻找平衡。游走于代码底层逻辑与数字艺术视觉之中。
+                  </p>
+                  <p className="text-gray-500">
+                    // 喜欢研究古早的图形学算法，<br />
+                    // 偏爱像素、CRT滤镜和一切充满电子废墟感的美学。<br />
+                    // End of file.
+                  </p>
+                </div>
+
+                <h3 className="text-sm text-[#0ff] font-bold mb-3 uppercase tracking-widest">&gt; Skill_Matrix.dat</h3>
+                <table className="w-full retro-table text-left text-sm mb-6">
+                  <thead>
+                    <tr>
+                      <th className="w-1/4">MODULE</th>
+                      <th className="w-1/2">COMPONENTS</th>
+                      <th className="w-1/4">LEVEL</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="hover:bg-[#001a1a]">
+                      <td className="text-[#0ff]">sys.Programming</td>
+                      <td>C#, C++, Python, JavaScript</td>
+                      <td className="text-[#f0f]">||||||||-- 80%</td>
+                    </tr>
+                    <tr className="hover:bg-[#001a1a]">
+                      <td className="text-[#0ff]">sys.TechArt</td>
+                      <td>HLSL/GLSL, Shader Graph, Niagara</td>
+                      <td className="text-[#f0f]">|||||||||| 100%</td>
+                    </tr>
+                    <tr className="hover:bg-[#001a1a]">
+                      <td className="text-[#0ff]">sys.3D_Art</td>
+                      <td>Blender, Maya, ZBrush</td>
+                      <td className="text-[#f0f]">||||||---- 60%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {activeTab === 'blog' && (
+              <div>
+                <h2 className="text-xl font-bold text-[#0ff] mb-6 border-b border-[#334] pb-2 uppercase tracking-widest">&gt; Read_Diary.log</h2>
+                <div className="space-y-6">
+                  {[
+                    { date: '2026.02.20', title: 'STYLESHEET_OVERRIDE', content: '重写了整个网站的CSS。去掉了所有圆角，加上了厚重的阴影和CRT扫描线。现在它看起来就像一台运行在1998年的破旧监视器。' },
+                    { date: '2026.02.15', title: 'DITHERING_ALGORITHM', content: '这周在研究如何用 Shader 实现完美的拜耳抖动矩阵（Bayer Matrix Dithering）。为了达到那种低色彩深度的复古感，计算屏幕空间坐标时遇到了一点精度问题。' },
+                    { date: '2026.02.01', title: 'HARDWARE_DEGRADE', content: '找出了以前的旧显卡和CRT显示器。物理层面上的扫描线和电子束带来的拖影，是任何后期滤镜都无法完美复刻的浪漫。' }
+                  ].map((post, idx) => (
+                    <div key={idx} className="bg-[#0a0a12] p-4 border border-[#334] hover:border-[#0ff] transition-colors relative group">
+                      <div className="text-[#f0f] text-xs font-bold mb-2">[{post.date}] - {post.title}</div>
+                      <p className="text-gray-400 text-sm leading-relaxed">{post.content}</p>
+                      <div className="absolute top-0 right-0 p-1 opacity-0 group-hover:opacity-100 text-[#0ff] text-xs transition-opacity">
+                        [READ]
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'photo' && (
+              <div>
+                <h2 className="text-xl font-bold text-[#0ff] mb-6 border-b border-[#334] pb-2 uppercase tracking-widest">&gt; Image_Data_Extraction</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  {[1, 2, 3, 4].map((item) => (
+                    <div key={item} className="p-2 border border-[#334] bg-[#050508] hover:border-[#0ff] transition-colors group">
+                      <div
+                        className="bg-[#111] aspect-video flex items-center justify-center mb-2 relative overflow-hidden low-res-filter"
+                        style={{
+                          backgroundImage: 'repeating-linear-gradient(45deg, #111 25%, transparent 25%, transparent 75%, #111 75%, #111), repeating-linear-gradient(45deg, #111 25%, #000 25%, #000 75%, #111 75%, #111)',
+                          backgroundPosition: '0 0, 2px 2px',
+                          backgroundSize: '4px 4px'
+                        }}
+                      >
+                        <span className="text-gray-600 text-xs font-mono group-hover:text-[#0ff] z-10">NO_IMG_DATA_{item}.bmp</span>
+                      </div>
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="text-[#f0f]">IMG_00{item}</span>
+                        <span className="text-gray-500">256x256</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'tech' && (
+              <div>
+                <h2 className="text-xl font-bold text-[#0ff] mb-6 border-b border-[#334] pb-2 uppercase tracking-widest">&gt; Technical_Documents</h2>
+                <ul className="space-y-3 font-mono text-sm">
+                  {[
+                    'Dithering_and_Pixelation_in_PostProcessing.pdf',
+                    'Real-time_CRT_Screen_Simulation.md',
+                    'Procedural_Noise_Generation_hlsl.txt',
+                    'Glitch_Art_Displacement_Mapping.doc'
+                  ].map((title, idx) => (
+                    <li key={idx} className="flex items-center p-3 bg-[#0a0a12] border border-[#334] hover:border-[#0ff] hover:bg-[#001a1a] cursor-pointer text-gray-300 transition-colors">
+                      <span className="text-[#0ff] mr-3">[*]</span>
+                      <span className="hover:glitch-text">{title}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {activeTab === 'ta' && (
+              <div>
+                <h2 className="text-xl font-bold text-[#0ff] mb-6 border-b border-[#334] pb-2 uppercase tracking-widest">&gt; Shader_&_FX_Render</h2>
+                <div className="space-y-6">
+                  <div className="border border-[#334] p-4 bg-[#0a0a12]">
+                    <h3 className="font-bold text-sm text-[#0ff] mb-3 uppercase">FX_01: Retro PS1 Graphic Style</h3>
+                    <div className="w-full h-40 bg-[#000] border border-[#333] flex flex-col items-center justify-center mb-3 low-res-filter relative">
+                      <div className="absolute inset-0" style={{ background: 'linear-gradient(transparent 50%, rgba(0,0,0,0.5) 50%)', backgroundSize: '100% 4px' }} />
+                      <span className="text-[#0ff] text-xs z-10 blink-text">[ANIMATION_RENDER_AREA]</span>
+                    </div>
+                    <p className="text-xs text-gray-400">顶点捕捉 (Vertex Snapping) + 仿射纹理映射 (Affine Texture Mapping) 模拟早期 PS1 硬件特有的抖动感。</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activeTab === '3d' && (
+              <div>
+                <h2 className="text-xl font-bold text-[#0ff] mb-6 border-b border-[#334] pb-2 uppercase tracking-widest">&gt; Mesh_Objects</h2>
+                <div className="grid grid-cols-2 gap-4">
+                  {[
+                    { name: 'Wireframe_Skull', ext: '.obj' },
+                    { name: 'Cyber_Terminal', ext: '.fbx' },
+                    { name: 'LowPoly_AnimeHead', ext: '.blend' },
+                    { name: 'Guns_&_Roses', ext: '.stl' }
+                  ].map((model, idx) => (
+                    <div key={idx} className="bg-[#0a0a12] border border-[#334] p-4 text-center hover:border-[#f0f] transition-colors group cursor-crosshair">
+                      <div className="text-4xl mb-3 text-gray-700 group-hover:text-[#f0f] transition-colors glitch-hover">#</div>
+                      <p className="text-xs text-[#0ff]">{model.name}<span className="text-gray-500">{model.ext}</span></p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'guestbook' && (
+              <div>
+                <h2 className="text-xl font-bold text-[#0ff] mb-6 border-b border-[#334] pb-2 uppercase tracking-widest">&gt; Local_Network_Guestbook</h2>
+
+                <form onSubmit={handleSignGuestbook} className="bg-[#0a0a12] p-5 border border-[#334] mb-8">
+                  <h3 className="text-[#f0f] text-sm font-bold mb-4 tracking-widest">INPUT_DATA</h3>
+                  <div className="mb-4">
+                    <label className="block text-xs text-gray-400 mb-2">ID_STRING:</label>
+                    <input
+                      type="text"
+                      value={newName}
+                      onChange={(e) => setNewName(e.target.value)}
+                      className="w-full p-2 bg-black border border-[#334] text-[#0ff] focus:border-[#0ff] outline-none pixel-font text-sm"
+                      placeholder="Enter username..."
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label className="block text-xs text-gray-400 mb-2">MESSAGE_PAYLOAD:</label>
+                    <textarea
+                      value={newMessage}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                      className="w-full p-2 bg-black border border-[#334] text-[#0ff] focus:border-[#0ff] outline-none pixel-font text-sm resize-none h-24"
+                      placeholder="Enter text string here..."
+                    />
+                  </div>
+                  <button type="submit" className="bg-[#001a1a] border border-[#0ff] text-[#0ff] px-6 py-2 text-sm uppercase hover:bg-[#0ff] hover:text-black transition-colors shadow-[2px_2px_0px_#334]">
+                    EXECUTE_SUBMIT
+                  </button>
+                </form>
+
+                <div className="space-y-4">
+                  {guestbookEntries.map((entry, idx) => (
+                    <div key={idx} className="flex bg-[#050508] border border-[#334] p-4 hover:border-gray-500 transition-colors">
+                      <div className="mr-4 mt-1">
+                        <div className="w-10 h-10 bg-black border border-[#f0f] flex items-center justify-center text-[#f0f] text-xs font-bold">
+                          USR
+                        </div>
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex justify-between items-end mb-2 border-b border-[#223] pb-1">
+                          <span className="font-bold text-[#0ff] text-sm">{entry.name}</span>
+                          <span className="text-xs text-gray-500">{entry.date}</span>
+                        </div>
+                        <p className="text-gray-300 text-sm">{entry.message}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-8 text-center text-gray-600 text-xs pixel-font border-t border-[#334] pt-4 max-w-6xl mx-auto">
+        <p>SYSTEM HALTED. // RENDERED WITH REACT & CSS</p>
+        <p className="mt-1">© 2026 CYBER_ANGEL_TERMINAL // NO SIGNAL.</p>
+      </div>
+    </div>
+  )
+}
+
+export default KawaiiPortfolio
