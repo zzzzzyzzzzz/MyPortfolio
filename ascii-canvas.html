@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASCII Canvas Editor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1e1e2f;
+            color: #eee;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            height: 100vh;
+            box-sizing: border-box;
+            gap: 20px;
+        }
+        .panel {
+            background: #2a2a40;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+        }
+        .left-panel {
+            width: 320px;
+            flex-shrink: 0;
+            overflow-y: auto;
+        }
+        .main-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .canvas-container {
+            flex: 2;
+            overflow: auto;
+            background: #14141e;
+            border: 2px solid #3a3a5a;
+            border-radius: 8px;
+            position: relative;
+            cursor: grab;
+        }
+        .canvas-container:active {
+            cursor: grabbing;
+        }
+        canvas {
+            display: block;
+            touch-action: none;
+            user-select: none;
+        }
+        .output-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        textarea {
+            width: 100%;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 10px;
+            box-sizing: border-box;
+            background: #14141e;
+            color: #00ffcc;
+            border: 1px solid #3a3a5a;
+            border-radius: 6px;
+            resize: none;
+        }
+        #input-ascii {
+            height: 120px;
+            margin-bottom: 10px;
+            color: #eee;
+        }
+        #output-ascii {
+            flex: 1;
+            white-space: pre;
+            overflow: auto;
+            font-size: 14px;
+            line-height: 1.2;
+        }
+        button {
+            padding: 10px 15px;
+            cursor: pointer;
+            border: none;
+            background: #6c5ce7;
+            color: white;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        button:hover { background: #5a4bcf; }
+        .layer-item {
+            padding: 10px;
+            background: #3a3a5a;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        .layer-item.active {
+            border-color: #00ffcc;
+            background: #4a4a6a;
+        }
+        .layer-title {
+            font-family: monospace;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 180px;
+        }
+        h3 { margin-top: 0; font-size: 16px; color: #a29bfe; }
+        .hint { font-size: 12px; color: #aaa; margin-bottom: 10px; }
+        .settings-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+        .settings-row label { font-size: 13px; display: flex; flex-direction: column; }
+        .settings-row input { background: #14141e; border: 1px solid #3a3a5a; color: #eee; padding: 5px; border-radius: 4px; font-family: monospace; margin-top: 5px; width: 100%; box-sizing: border-box; }
+        .settings-row .checkbox-label {
+            flex-direction: row !important;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            grid-column: span 3;
+            background: #14141e;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #3a3a5a;
+            cursor: pointer;
+        }
+        .settings-row .checkbox-label input { width: auto !important; margin: 0 !important; cursor: pointer; }
+        #edit-ascii { height: 120px; color: #eee; }
+    </style>
+</head>
+<body>
+
+    <div class="panel left-panel">
+        <h3>1. Canvas Settings</h3>
+        <div class="settings-row">
+            <label>Width (px)<input type="number" id="canvas-width" value="800" min="10"></label>
+            <label>Height (px)<input type="number" id="canvas-height" value="600" min="10"></label>
+            <label>Font (px)<input type="number" id="font-size" value="16" min="8" max="72"></label>
+            <label class="checkbox-label" title="When enabled, spaces won't cover layers below">
+                <input type="checkbox" id="transparent-spaces" checked> Transparent spaces
+            </label>
+            <label class="checkbox-label" title="When disabled, each line is padded with spaces to form a rectangle">
+                <input type="checkbox" id="trim-spaces" checked> Trim trailing spaces on export
+            </label>
+            <label class="checkbox-label" style="border-color: #a29bfe; color: #a29bfe;" title="Recommended for Braille dot-matrix patterns; uses Braille blank (U+2800) to fix alignment">
+                <input type="checkbox" id="braille-optimize"> 🌟 Fix Braille pattern alignment (U+2800)
+            </label>
+        </div>
+
+        <h3 style="margin-top: 20px;">2. Add ASCII Art</h3>
+        <textarea id="input-ascii" placeholder="Paste your ASCII art here..."></textarea>
+        <button onclick="addLayer()">+ Add as New Layer</button>
+
+        <h3 style="margin-top: 20px;">3. Edit Current Layer</h3>
+        <textarea id="edit-ascii" placeholder="Select a layer to edit..." disabled></textarea>
+
+        <h3 style="margin-top: 20px;">4. Layer List</h3>
+        <div class="hint">Click to select. Drag on canvas or use arrow keys to nudge.</div>
+        <div id="layer-list"></div>
+    </div>
+
+    <div class="main-panel">
+        <div class="panel canvas-container" id="canvas-wrapper">
+            <canvas id="ascii-canvas"></canvas>
+        </div>
+        
+        <div class="panel output-container">
+            <h3>5. Merged Output (WYSIWYG)</h3>
+            <textarea id="output-ascii" readonly></textarea>
+            <div style="font-size: 11px; color: #888; margin-top: 5px;">Note: Make sure your target environment uses a monospace font, otherwise alignment may break.</div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('ascii-canvas');
+        const ctx = canvas.getContext('2d');
+        const wrapper = document.getElementById('canvas-wrapper');
+        
+        let fontSize = 16;
+        const fontFamily = "'Consolas', 'Cascadia Code', 'Menlo', 'Courier New', monospace";
+        let cellW = 0;
+        let cellH = 0;
+
+        let layers = [];
+        let selectedIndex = -1;
+        let currentGrid = [];
+        let gridCols = 0;
+        let gridRows = 0;
+
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartY = 0;
+        let layerInitialX = 0;
+        let layerInitialY = 0;
+
+        window.onload = () => {
+            canvas.width = 1200;
+            canvas.height = 800;
+
+            updateFontSettings();
+
+            document.getElementById('canvas-width').addEventListener('input', updateAll);
+            document.getElementById('canvas-height').addEventListener('input', updateAll);
+            document.getElementById('font-size').addEventListener('input', updateAll);
+            document.getElementById('edit-ascii').addEventListener('input', handleEditLayer);
+            document.getElementById('transparent-spaces').addEventListener('change', updateAll);
+            document.getElementById('trim-spaces').addEventListener('change', updateAll);
+            document.getElementById('braille-optimize').addEventListener('change', updateAll);
+
+            layers.push({ text: ["  /\\_/\\  ", " ( o.o ) ", "  > ^ <  "], x: 10, y: 5 });
+            layers.push({ text: ["   .---.", "  /     \\", " | () () |", "  \\  ^  /", "   |||||", "   |||||"], x: 25, y: 2 });
+            
+            selectLayer(0);
+            updateAll();
+
+            window.addEventListener('keydown', handleKeyDown);
+        };
+
+        function updateFontSettings() {
+            fontSize = parseInt(document.getElementById('font-size').value) || 16;
+            ctx.font = `${fontSize}px ${fontFamily}`;
+            cellW = ctx.measureText('M').width;
+            cellH = fontSize * 1.2;
+        }
+
+        function addLayer() {
+            const input = document.getElementById('input-ascii').value;
+            if (!input.trim()) return;
+            const lines = input.replace(/\r/g, '').replace(/\t/g, '    ').split('\n');
+            layers.push({ text: lines, x: 5, y: 5 });
+            document.getElementById('input-ascii').value = '';
+            selectLayer(layers.length - 1);
+            updateAll();
+        }
+
+        function deleteLayer(index) {
+            layers.splice(index, 1);
+            if (selectedIndex === index) {
+                selectedIndex = layers.length > 0 ? 0 : -1;
+            } else if (selectedIndex > index) {
+                selectedIndex--;
+            }
+            updateAll();
+        }
+
+        function selectLayer(index) {
+            selectedIndex = index;
+            
+            const editBox = document.getElementById('edit-ascii');
+            if (index !== -1 && layers[index]) {
+                editBox.value = layers[index].text.join('\n');
+                editBox.disabled = false;
+            } else {
+                editBox.value = '';
+                editBox.disabled = true;
+            }
+
+            updateUI();
+            drawCanvas();
+        }
+
+        function handleEditLayer(e) {
+            if (selectedIndex === -1) return;
+            const newText = e.target.value.replace(/\r/g, '').replace(/\t/g, '    ').split('\n');
+            layers[selectedIndex].text = newText;
+            updateAll();
+        }
+
+        function buildGrid() {
+            if (cellW <= 0 || cellH <= 0) return;
+
+            const pxWidth = parseInt(document.getElementById('canvas-width').value) || 800;
+            const pxHeight = parseInt(document.getElementById('canvas-height').value) || 600;
+            
+            gridCols = Math.floor(pxWidth / cellW);
+            gridRows = Math.floor(pxHeight / cellH);
+            const isTransparent = document.getElementById('transparent-spaces').checked;
+            const useBrailleSpace = document.getElementById('braille-optimize').checked;
+            
+            const defaultSpace = useBrailleSpace ? '⠀' : ' ';
+
+            currentGrid = Array.from({ length: gridRows }, () => 
+                Array(gridCols).fill(null).map(() => ({ char: defaultSpace, layerIndex: -1 }))
+            );
+
+            layers.forEach((layer, index) => {
+                layer.text.forEach((line, dy) => {
+                    const rowIdx = layer.y + dy;
+                    if (rowIdx >= 0 && rowIdx < gridRows) {
+                        for (let dx = 0; dx < line.length; dx++) {
+                            const colIdx = layer.x + dx;
+                            if (colIdx >= 0 && colIdx < gridCols) {
+                                let char = line[dx];
+                                if (char) {
+                                    if (useBrailleSpace && char === ' ') {
+                                        char = '⠀';
+                                    }
+
+                                    const isCharSpace = (char === ' ' || char === '⠀');
+
+                                    if (isTransparent) {
+                                        if (!isCharSpace) {
+                                            currentGrid[rowIdx][colIdx] = { char: char, layerIndex: index };
+                                        }
+                                    } else {
+                                        currentGrid[rowIdx][colIdx] = { char: char, layerIndex: index };
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        }
+
+        function drawCanvas() {
+            if (cellW <= 0 || cellH <= 0) return;
+
+            const pxWidth = parseInt(document.getElementById('canvas-width').value) || 800;
+            const pxHeight = parseInt(document.getElementById('canvas-height').value) || 600;
+            
+            canvas.width = Math.max(1200, pxWidth + 100);
+            canvas.height = Math.max(800, pxHeight + 100);
+
+            ctx.fillStyle = '#14141e';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = '#232333';
+            ctx.lineWidth = 1;
+            for(let i=0; i<canvas.width; i+=cellW) {
+                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+            }
+            for(let i=0; i<canvas.height; i+=cellH) {
+                ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke();
+            }
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+            ctx.fillRect(0, 0, pxWidth, pxHeight);
+            ctx.strokeStyle = '#6c5ce7';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(0, 0, pxWidth, pxHeight);
+
+            ctx.font = `${fontSize}px ${fontFamily}`;
+            ctx.textBaseline = 'top';
+
+            currentGrid.forEach((row, rowIdx) => {
+                row.forEach((cell, colIdx) => {
+                    if (cell.char !== ' ' && cell.char !== '⠀') {
+                        ctx.fillStyle = cell.layerIndex === selectedIndex ? '#00ffcc' : '#a0a0b5';
+                        ctx.fillText(cell.char, colIdx * cellW, rowIdx * cellH);
+                    }
+                });
+            });
+
+            if (selectedIndex !== -1 && layers[selectedIndex]) {
+                const layer = layers[selectedIndex];
+                let maxLen = Math.max(...layer.text.map(l => l.length));
+                ctx.strokeStyle = 'rgba(0, 255, 204, 0.4)';
+                ctx.setLineDash([5, 5]);
+                ctx.strokeRect(
+                    layer.x * cellW, 
+                    layer.y * cellH, 
+                    maxLen * cellW, 
+                    layer.text.length * cellH
+                );
+                ctx.setLineDash([]);
+            }
+        }
+
+        function getCanvasGrid(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const mouseX = (e.clientX - rect.left) * scaleX;
+            const mouseY = (e.clientY - rect.top) * scaleY;
+            return {
+                gridX: Math.floor(mouseX / cellW),
+                gridY: Math.floor(mouseY / cellH)
+            };
+        }
+
+        canvas.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            canvas.setPointerCapture(e.pointerId);
+
+            const { gridX, gridY } = getCanvasGrid(e);
+            const isTransparent = document.getElementById('transparent-spaces').checked;
+            let clickedIndex = -1;
+
+            for (let i = layers.length - 1; i >= 0; i--) {
+                const layer = layers[i];
+                if (gridY >= layer.y && gridY < layer.y + layer.text.length) {
+                    const line = layer.text[gridY - layer.y];
+                    if (gridX >= layer.x && gridX < layer.x + line.length) {
+                        const char = line[gridX - layer.x];
+                        if (char !== undefined) {
+                            const isCharSpace = (char === ' ' || char === '⠀');
+                            if (isTransparent && isCharSpace) {
+                                continue;
+                            }
+                            clickedIndex = i;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (clickedIndex !== -1) {
+                selectLayer(clickedIndex);
+                isDragging = true;
+                dragStartX = gridX;
+                dragStartY = gridY;
+                layerInitialX = layers[clickedIndex].x;
+                layerInitialY = layers[clickedIndex].y;
+            } else {
+                selectLayer(-1);
+            }
+        });
+
+        canvas.addEventListener('pointermove', (e) => {
+            if (!isDragging || selectedIndex === -1) return;
+            e.preventDefault();
+
+            const { gridX, gridY } = getCanvasGrid(e);
+            const deltaX = gridX - dragStartX;
+            const deltaY = gridY - dragStartY;
+
+            layers[selectedIndex].x = layerInitialX + deltaX;
+            layers[selectedIndex].y = layerInitialY + deltaY;
+            
+            buildGrid();
+            drawCanvas();
+        });
+
+        canvas.addEventListener('pointerup', (e) => {
+            if (isDragging) {
+                isDragging = false;
+                canvas.releasePointerCapture(e.pointerId);
+                generateOutputText();
+            }
+        });
+
+        canvas.addEventListener('pointercancel', (e) => {
+            if (isDragging) {
+                isDragging = false;
+                canvas.releasePointerCapture(e.pointerId);
+                generateOutputText();
+            }
+        });
+
+        function handleKeyDown(e) {
+            if (selectedIndex === -1) return;
+            if (document.activeElement.tagName === 'TEXTAREA' || document.activeElement.tagName === 'INPUT') return;
+
+            let moved = false;
+            switch(e.key) {
+                case 'ArrowUp': layers[selectedIndex].y--; moved = true; break;
+                case 'ArrowDown': layers[selectedIndex].y++; moved = true; break;
+                case 'ArrowLeft': layers[selectedIndex].x--; moved = true; break;
+                case 'ArrowRight': layers[selectedIndex].x++; moved = true; break;
+            }
+            
+            if (moved) {
+                e.preventDefault();
+                updateAll();
+            }
+        }
+
+        function updateAll() {
+            updateFontSettings(); 
+            buildGrid();
+            updateUI();
+            drawCanvas();
+            generateOutputText();
+        }
+
+        function updateUI() {
+            const listDiv = document.getElementById('layer-list');
+            listDiv.innerHTML = '';
+            layers.forEach((layer, idx) => {
+                const item = document.createElement('div');
+                item.className = 'layer-item ' + (idx === selectedIndex ? 'active' : '');
+                
+                let preview = "Empty layer";
+                for(let line of layer.text) {
+                    if (line.trim()) {
+                        preview = line.trim().substring(0, 15) + '...';
+                        break;
+                    }
+                }
+
+                item.innerHTML = `
+                    <div class="layer-title" onclick="selectLayer(${idx})" style="flex:1;">
+                        [${idx + 1}] ${preview}
+                    </div>
+                    <button style="background:#ff4757; padding: 4px 8px; font-size:12px;" onclick="deleteLayer(${idx}); event.stopPropagation();">Delete</button>
+                `;
+                listDiv.appendChild(item);
+            });
+            
+            document.getElementById('output-ascii').style.fontSize = fontSize + 'px';
+        }
+
+        function generateOutputText() {
+            if (layers.length === 0 || currentGrid.length === 0) {
+                document.getElementById('output-ascii').value = '';
+                return;
+            }
+
+            const isTrim = document.getElementById('trim-spaces').checked;
+
+            let outputStr = currentGrid.map(row => {
+                let lineStr = row.map(cell => cell.char).join('');
+                return isTrim ? lineStr.replace(/[ ⠀]+$/, '') : lineStr;
+            }).join('\n');
+            
+            document.getElementById('output-ascii').value = outputStr;
+        }
+    </script>
+</body>
+</html>

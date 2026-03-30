@@ -1,13 +1,1299 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tech_Angel_99 — Portfolio</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JoJo's Delulu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Serif+SC:wght@400;700&family=Silkscreen&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body>
+
+<canvas id="shader-bg" aria-hidden="true"></canvas>
+
+<!-- Sparkle effect -->
+<div class="sparkle-container" id="sparkles"></div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lightbox-content" onclick="event.stopPropagation()">
+    <div class="lightbox-titlebar">
+      <span class="lightbox-titlebar-text" id="lb-titlebar">PREVIEW</span>
+      <button class="lightbox-titlebar-close" onclick="closeLightbox()">✕</button>
+    </div>
+    <div class="lightbox-inner">
+      <div class="lightbox-image" id="lb-image"></div>
+      <h3 class="lightbox-title" id="lb-title"></h3>
+      <div class="lightbox-body" id="lb-body"></div>
+    </div>
+  </div>
+</div>
+
+<div class="site-wrapper">
+
+  <!-- ========== HEADER ========== -->
+  <header class="header">
+    <div class="cloud-banner">
+      <div class="header-masked-bg"></div>
+      <div class="header-outline"></div>
+      <div class="site-title">
+        <img src="public\title-big.gif" alt="Glitter Title" class="glitter-title">
+      </div>
+      <img src="/title-small.gif" alt="developer and technical artist" class="title-small-overlay">
+    </div>
+    <span class="header-deco deco-star1">*</span>
+    <span class="header-deco deco-star2">+</span>
+    <span class="header-deco deco-note1">~</span>
+    <span class="header-deco deco-note2">#</span>
+    <span class="header-deco deco-flower1">.</span>
+    <span class="header-deco deco-flower2">*</span>
+
+    <div class="lang-switch">
+      <button class="lang-btn active" onclick="switchLang('en')">EN</button>
+      <button class="lang-btn" onclick="switchLang('zh')">中文</button>
+    </div>
+  </header>
+
+  <!-- ========== STAMP STRIP：深蓝闪烁像素框 + 暗色内轨 + 星星分隔 + 你的图片印章 ========== -->
+  <div class="stamp-strip" role="region" aria-label="Friend site stamps">
+    <div class="px-bc-container">
+      <div class="px-bc-inner">
+        <div class="px-bc-dither" aria-hidden="true"></div>
+        <div class="px-bc-track">
+          <div class="px-bc-set">
+            <a class="px-marquee-stamp px-marquee-stamp--img" href="https://vinizinho.net/" target="_blank" rel="noopener noreferrer" title="visit the vinizone"><span class="px-marquee-stamp__content"><img src="/vinizone-stamp.png" alt="vinizone" class="stamp-img" width="88" height="31" loading="lazy"></span><span class="px-marquee-stamp__shine" aria-hidden="true"></span></a>
+            <span class="px-bc-star" aria-hidden="true"></span>
+            <a class="px-marquee-stamp px-marquee-stamp--img px-marquee-stamp--v2" href="https://melonking.net/" target="_blank" rel="noopener noreferrer" title="Always Your Pal, Melon!"><span class="px-marquee-stamp__content"><img src="/melonking-stamp.png" alt="Melonking" class="stamp-img" width="88" height="31" loading="lazy"></span><span class="px-marquee-stamp__shine" aria-hidden="true"></span></a>
+            <span class="px-bc-star" aria-hidden="true"></span>
+            <a class="px-marquee-stamp px-marquee-stamp--img px-marquee-stamp--v3" href="https://lu.tiny-universes.net/" target="_blank" rel="noopener noreferrer" title="lulu in cyberspace"><span class="px-marquee-stamp__content"><img src="/lulu.gif" alt="LULU" class="stamp-img" width="88" height="31" loading="lazy"></span><span class="px-marquee-stamp__shine" aria-hidden="true"></span></a>
+            <span class="px-bc-star" aria-hidden="true"></span>
+            <a class="px-marquee-stamp px-marquee-stamp--img px-marquee-stamp--v4" href="https://delovely.neocities.org/" target="_blank" rel="noopener noreferrer" title="delovely"><span class="px-marquee-stamp__content"><img src="/delovely-stamp.png" alt="delovely" class="stamp-img" width="88" height="31" loading="lazy"></span><span class="px-marquee-stamp__shine" aria-hidden="true"></span></a>
+            <span class="px-bc-star" aria-hidden="true"></span>
+            <a class="px-marquee-stamp px-marquee-stamp--img" href="https://exo.pet/" target="_blank" rel="noopener noreferrer" title="exo.pet"><span class="px-marquee-stamp__content"><img src="/exo.gif" alt="exosilver" class="stamp-img" width="88" height="31" loading="lazy"></span><span class="px-marquee-stamp__shine" aria-hidden="true"></span></a>
+            <span class="px-bc-star" aria-hidden="true"></span>
+            <a class="px-marquee-stamp px-marquee-stamp--img px-marquee-stamp--v2" href="https://devils.neocities.org/" target="_blank" rel="noopener noreferrer" title="devils"><span class="px-marquee-stamp__content"><img src="/devil.gif" alt="Devils" class="stamp-img" width="88" height="31" loading="lazy"></span><span class="px-marquee-stamp__shine" aria-hidden="true"></span></a>
+            <span class="px-bc-star" aria-hidden="true"></span>
+            <a class="px-marquee-stamp px-marquee-stamp--img px-marquee-stamp--v3" href="https://kakashi.neocities.org/" target="_blank" rel="noopener noreferrer" title="spirited beginning"><span class="px-marquee-stamp__content"><img src="/kakashi.gif" alt="案灿子" class="stamp-img" width="88" height="31" loading="lazy"></span><span class="px-marquee-stamp__shine" aria-hidden="true"></span></a>
+            <span class="px-bc-star" aria-hidden="true"></span>
+            <a class="px-marquee-stamp px-marquee-stamp--img px-marquee-stamp--v4" href="http://pixeldolls.net/" target="_blank" rel="noopener noreferrer" title="pixeldolls"><span class="px-marquee-stamp__content"><img src="https://i.postimg.cc/4yB9zVPG/banner.gif" alt="pixeldolls" class="stamp-img" width="88" height="31" loading="lazy"></span><span class="px-marquee-stamp__shine" aria-hidden="true"></span></a>
+            <span class="px-bc-star" aria-hidden="true"></span>
+            <a class="px-marquee-stamp px-marquee-stamp--img" href="https://artwork.neocities.org/" target="_blank" rel="noopener noreferrer" title="ARTWORK"><span class="px-marquee-stamp__content"><img src="/artworkbuttonsanrio.gif" alt="artwork" class="stamp-img" width="88" height="31" loading="lazy"></span><span class="px-marquee-stamp__shine" aria-hidden="true"></span></a>
+            <span class="px-bc-star" aria-hidden="true"></span>
+          </div>
+          <div class="px-bc-set px-bc-set--clone" aria-hidden="true">
+            <a class="px-marquee-stamp px-marquee-stamp--img" href="https://vinizinho.net/" target="_blank" rel="noopener noreferrer" tabindex="-1" title="visit the vinizone"><span class="px-marquee-stamp__content"><img src="/vinizone-stamp.png" alt="" class="stamp-img" width="88" height="31" loading="lazy"></span><span class="px-marquee-stamp__shine" aria-hidden="true"></span></a>
+            <span class="px-bc-star" aria-hidden="true"></span>
+            <a class="px-marquee-stamp px-marquee-stamp--img px-marquee-stamp--v2" href="https://melonking.net/" target="_blank" rel="noopener noreferrer" tabindex="-1" title="Always Your Pal, Melon!"><span class="px-marquee-stamp__content"><img src="/melonking-stamp.png" alt="" class="stamp-img" width="88" height="31" loading="lazy"></span><span class="px-marquee-stamp__shine" aria-hidden="true"></span></a>
+            <span class="px-bc-star" aria-hidden="true"></span>
+            <a class="px-marquee-stamp px-marquee-stamp--img px-marquee-stamp--v3" href="https://lu.tiny-universes.net/" target="_blank" rel="noopener noreferrer" tabindex="-1" title="lulu in cyberspace"><span class="px-marquee-stamp__content"><img src="/lulu.gif" alt="" class="stamp-img" width="88" height="31" loading="lazy"></span><span class="px-marquee-stamp__shine" aria-hidden="true"></span></a>
+            <span class="px-bc-star" aria-hidden="true"></span>
+            <a class="px-marquee-stamp px-marquee-stamp--img px-marquee-stamp--v4" href="https://delovely.neocities.org/" target="_blank" rel="noopener noreferrer" tabindex="-1" title="delovely"><span class="px-marquee-stamp__content"><img src="/delovely-stamp.png" alt="" class="stamp-img" width="88" height="31" loading="lazy"></span><span class="px-marquee-stamp__shine" aria-hidden="true"></span></a>
+            <span class="px-bc-star" aria-hidden="true"></span>
+            <a class="px-marquee-stamp px-marquee-stamp--img" href="https://exo.pet/" target="_blank" rel="noopener noreferrer" tabindex="-1" title="exo.pet"><span class="px-marquee-stamp__content"><img src="/exo.gif" alt="" class="stamp-img" width="88" height="31" loading="lazy"></span><span class="px-marquee-stamp__shine" aria-hidden="true"></span></a>
+            <span class="px-bc-star" aria-hidden="true"></span>
+            <a class="px-marquee-stamp px-marquee-stamp--img px-marquee-stamp--v2" href="https://devils.neocities.org/" target="_blank" rel="noopener noreferrer" tabindex="-1" title="devils"><span class="px-marquee-stamp__content"><img src="/devil.gif" alt="" class="stamp-img" width="88" height="31" loading="lazy"></span><span class="px-marquee-stamp__shine" aria-hidden="true"></span></a>
+            <span class="px-bc-star" aria-hidden="true"></span>
+            <a class="px-marquee-stamp px-marquee-stamp--img px-marquee-stamp--v3" href="https://kakashi.neocities.org/" target="_blank" rel="noopener noreferrer" tabindex="-1" title="spirited beginning"><span class="px-marquee-stamp__content"><img src="/kakashi.gif" alt="" class="stamp-img" width="88" height="31" loading="lazy"></span><span class="px-marquee-stamp__shine" aria-hidden="true"></span></a>
+            <span class="px-bc-star" aria-hidden="true"></span>
+            <a class="px-marquee-stamp px-marquee-stamp--img px-marquee-stamp--v4" href="http://pixeldolls.net/" target="_blank" rel="noopener noreferrer" tabindex="-1" title="pixeldolls"><span class="px-marquee-stamp__content"><img src="https://i.postimg.cc/4yB9zVPG/banner.gif" alt="" class="stamp-img" width="88" height="31" loading="lazy"></span><span class="px-marquee-stamp__shine" aria-hidden="true"></span></a>
+            <span class="px-bc-star" aria-hidden="true"></span>
+            <a class="px-marquee-stamp px-marquee-stamp--img" href="https://artwork.neocities.org/" target="_blank" rel="noopener noreferrer" tabindex="-1" title="ARTWORK"><span class="px-marquee-stamp__content"><img src="/artworkbuttonsanrio.gif" alt="" class="stamp-img" width="88" height="31" loading="lazy"></span><span class="px-marquee-stamp__shine" aria-hidden="true"></span></a>
+            <span class="px-bc-star" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MAIN LAYOUT ========== -->
+  <div class="main-layout">
+    <!-- 米色 CRT 底 + 棕色 ASCII（图案见 /main-layout-ascii.txt） -->
+    <div class="main-layout-crt-bg" aria-hidden="true">
+      <pre class="main-layout-ascii" id="main-layout-ascii-pre"></pre>
+    </div>
+    <!-- 边框：用 Edges 图片拼接 -->
+    <div class="main-layout-edges" aria-hidden="true">
+      <div class="main-layout-edge main-layout-edge--right"></div>
+      <div class="main-layout-edge main-layout-edge--bottom"></div>
+      <div class="main-layout-edge main-layout-edge--left"></div>
+    </div>
+
+    <img src="/deco-lotus.gif" alt="" class="main-lotus-deco" aria-hidden="true">
+
+    <div class="chain-left" aria-hidden="true"></div>
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+
+      <!-- Profile - QQ Show Embed -->
+      <div class="sidebar-box profile-mini">
+        <div class="qqshow-wrapper">
+          <iframe
+            class="qqshow-embed"
+            src="https://qqshow2000.com/?id=hoe50zdr"
+            title="QQShow"
+            allowfullscreen
+          ></iframe>
+          <a class="qqshow-link" href="https://qqshow2000.com/?id=hoe50zdr" target="_blank" rel="noopener noreferrer" title="打开 QQ 秀"></a>
+        </div>
+        <div class="profile-name">Yizhen</div>
+        <div class="profile-desc">
+          <span class="status-online"></span>
+          <span data-en="Online" data-zh="在线">Online</span>
+        </div>
+        <div style="margin-top:6px;">
+          <span class="tag">Dev</span>
+          <span class="tag">TA</span>
+          <span class="tag">3D</span>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="sidebar-box">
+        <div class="sidebar-box-title" data-en="NAVIGATE" data-zh="导航">NAVIGATE</div>
+        <nav class="nav-menu">
+          <a class="nav-link active" onclick="showPage('about')" data-page="about">
+            <span class="nav-icon">♡</span> <span data-en="About Me" data-zh="关于我">About Me</span>
+          </a>
+          <a class="nav-link" onclick="showPage('blog')" data-page="blog">
+            <span class="nav-icon">✎</span> <span data-en="Blog" data-zh="博客">Blog</span>
+          </a>
+          <a class="nav-link" onclick="showPage('photography')" data-page="photography">
+            <span class="nav-icon">📷</span> <span data-en="Photography" data-zh="摄影">Photography</span>
+          </a>
+          <a class="nav-link" onclick="showPage('ta-works')" data-page="ta-works">
+            <span class="nav-icon">🎨</span> <span data-en="Projects" data-zh="项目">Projects</span>
+          </a>
+          <a class="nav-link" onclick="showPage('modeling')" data-page="modeling">
+            <span class="nav-icon">🧊</span> <span data-en="3D Modeling" data-zh="建模作品">3D Modeling</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Internet Mood -->
+      <div class="sidebar-box">
+        <div class="sidebar-box-title" data-en="INTERNET MOOD" data-zh="心情">MOOD</div>
+        <div class="imood-widget">
+          <img src="/ac-sticker.gif" alt="" class="mood-deco mood-deco-left">
+          <a href="https://www.imood.com/imood"><img src="https://moods.imood.com/internet/current.gif" alt="The current mood of the Internet at www.imood.com" border="0"></a>
+          <img src="/ac-sticker.gif" alt="" class="mood-deco mood-deco-right">
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- CENTER CONTENT AREA -->
+    <main class="center-content">
+      <div class="content-inner">
+        <div id="content-titlebar" class="content-inner-titlebar" data-en="About Me" data-zh="关于我">About Me</div>
+        <div class="content-inner-body">
+        <!-- 中间 CRT 区 ASCII 水印：/content-inner-ascii.txt -->
+        <pre class="content-inner-ascii" id="content-inner-ascii-pre" aria-hidden="true"></pre>
+
+        <!-- ===== ABOUT PAGE ===== -->
+        <div class="page-section active" id="page-about">
+          <h2 class="section-title" data-en="About Me" data-zh="关于我">About Me</h2>
+
+          <p data-en="Hello! Welcome to my portfolio. I'm a Developer and Technical Artist who bridges the gap between art and technology. I love creating beautiful, interactive experiences through code and art."
+             data-zh="你好！欢迎来到我的作品集。我是一名开发者和技术美术，致力于连接艺术与技术之间的桥梁。我热衷于通过代码和艺术创造美丽的交互体验。">
+            Hello! Welcome to my dream portfolio ✿ I'm a Developer and Technical Artist who bridges the gap between art and technology. I love creating beautiful, interactive experiences through code and art.
+          </p>
+
+          <p data-en="With a passion for real-time rendering, shader programming, and procedural generation, I create tools and visual effects that push creative boundaries. My work spans game development, VFX, and interactive installations."
+             data-zh="怀着对实时渲染、着色器编程和程序化生成的热情，我创造突破创意边界的工具和视觉效果。我的工作涵盖游戏开发、视觉特效和交互装置。">
+            With a passion for real-time rendering, shader programming, and procedural generation, I create tools and visual effects that push creative boundaries. My work spans game development, VFX, and interactive installations.
+          </p>
+
+          <!-- hamster divider strip -->
+          <div class="deco-strip deco-strip--hamster" aria-hidden="true"></div>
+
+          <!-- piggy divider strip -->
+          <div class="deco-strip deco-strip--piggy" aria-hidden="true"></div>
+
+          <!-- luckyneko divider strip -->
+          <div class="deco-strip deco-strip--luckyneko" aria-hidden="true"></div>
+
+          <h3 class="section-subtitle" data-en="✦ Skills" data-zh="✦ 技能">✦ Skills</h3>
+          <div class="skill-list">
+            <div class="skill-item">
+              <span class="skill-name">C# / Unity</span>
+              <div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Python</span>
+              <div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">JavaScript / HTML</span>
+              <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">HLSL / Shaders</span>
+              <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">XR Development (VR/AR)</span>
+              <div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">Maya / Houdini</span>
+              <div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div>
+            </div>
+            <div class="skill-item">
+              <span class="skill-name">.NET / RESTful API</span>
+              <div class="skill-bar"><div class="skill-fill" style="width:75%"></div></div>
+            </div>
+          </div>
+
+
+          <!-- <h3 class="section-subtitle" data-en="✦ Experience" data-zh="✦ 经历">✦ Experience</h3>
+          <div class="experience-list">
+          <div class="blog-post">
+            <div class="blog-title" data-en="Software Developer @ Yumebau Inc" data-zh="软件开发 @ Yumebau Inc">Software Developer @ Yumebau Inc</div>
+            <div class="blog-meta">03/2024 – 08/2025 · FIFA Companion App (Mobile AR) · BuildPort Xumia (Meta Quest VR)</div>
+            <div class="blog-excerpt" data-en="Implemented mobile UI flows and core systems in Unity/C#. Integrated RESTful services with error handling and JSON caching. Built 2D UI in 3D world with XR Interaction Toolkit. Created cross-platform debugging tools, reducing issue reproduction time by 30%."
+                 data-zh="使用Unity/C#实现移动端UI流程和核心系统。集成RESTful服务，包含错误处理和JSON缓存。使用XR Interaction Toolkit在3D世界中构建2D UI。创建跨平台调试工具，将问题复现时间缩短30%。">
+              Implemented mobile UI flows and core systems in Unity/C#. Integrated RESTful services with error handling and JSON caching. Built 2D UI in 3D world with XR Interaction Toolkit. Created cross-platform debugging tools, reducing issue reproduction time by 30%.
+            </div>
+          </div>
+          <div class="blog-post">
+            <div class="blog-title" data-en="Associate Technical Artist @ Electronic Arts" data-zh="助理技术美术 @ Electronic Arts">Associate Technical Artist @ Electronic Arts</div>
+            <div class="blog-meta">09/2022 – 09/2023 · UFC (PC)</div>
+            <div class="blog-excerpt" data-en="Optimized Maya/Houdini asset pipelines via Python/Maya API, reducing creation time by 30%. Built QA automation tools catching 90% of issues pre-release. Supported a team of 15 artists with debugging and plugin troubleshooting."
+                 data-zh="通过Python/Maya API优化Maya/Houdini资产管线，将创建时间缩短30%。构建QA自动化工具，在发布前捕获90%的问题。为15人美术团队提供调试和插件故障排除支持。">
+              Optimized Maya/Houdini asset pipelines via Python/Maya API, reducing creation time by 30%. Built QA automation tools catching 90% of issues pre-release. Supported a team of 15 artists with debugging and plugin troubleshooting.
+            </div>
+          </div>
+          <div class="blog-post">
+            <div class="blog-title" data-en="Unity Developer (Contract)" data-zh="Unity开发（合同）">Unity Developer (Contract)</div>
+            <div class="blog-meta">01/2020 – 09/2022 · Multiple XR Projects</div>
+            <div class="blog-excerpt" data-en="iOS AR Tourism App: Sole full-stack Unity dev, launched polished AR experience. UBC VR Medical Training: Primary technical contact, translated faculty needs into effective VR tool. Quest VR App &amp; WebVR Educational Game development."
+                 data-zh="iOS AR旅游应用：独立全栈Unity开发，交付精美AR体验。UBC VR医疗培训：主要技术联系人，将学院需求转化为有效VR工具。Quest VR应用和WebVR教育游戏开发。">
+              iOS AR Tourism App: Sole full-stack Unity dev, launched polished AR experience. UBC VR Medical Training: Primary technical contact, translated faculty needs into effective VR tool. Quest VR App &amp; WebVR Educational Game development.
+            </div>
+          </div>
+          <div class="blog-post">
+            <div class="blog-title" data-en="Education" data-zh="教育背景">Education</div>
+            <div class="blog-meta">University of British Columbia</div>
+            <div class="blog-excerpt" data-en="Master of Digital Media (2021–2022) · Bachelor of Science in Computer Science (2016–2021)"
+                 data-zh="数字媒体硕士 (2021–2022) · 计算机科学理学学士 (2016–2021)">
+              Master of Digital Media (2021–2022) · Bachelor of Science in Computer Science (2016–2021)
+            </div>
+          </div>
+          </div> -->
+        </div>
+
+        <!-- ===== BLOG PAGE (Tech Articles + Random) ===== -->
+        <div class="page-section" id="page-blog">
+          <h2 class="section-title" data-en="Blog" data-zh="博客">Blog</h2>
+
+          <!-- ======================================================
+               BLOG FORMAT REFERENCE (hidden) — 格式参考，勿删
+               ======================================================
+          <div class="blog-filter">
+            <button type="button" class="blog-filter-tag active" data-filter="all" data-en="All" data-zh="全部">All</button>
+            <button type="button" class="blog-filter-tag" data-filter="tech" data-en="Tech Articles" data-zh="技术文章">Tech Articles</button>
+            <button type="button" class="blog-filter-tag" data-filter="random" data-en="Random" data-zh="随笔">Random</button>
+          </div>
+          <div class="blog-category" data-category="random">
+          <h3 class="section-subtitle" data-en="✦ Random" data-zh="✦ 随笔">✦ Random</h3>
+          <div class="blog-list">
+            <div class="blog-post">
+              <div class="blog-title" data-en="Post Title" data-zh="文章标题">Post Title</div>
+              <div class="blog-meta">2024.01.01 · <span data-en="5 min read" data-zh="阅读5分钟">5 min read</span></div>
+              <div class="blog-excerpt" data-en="Short excerpt text here..." data-zh="文章摘要...">
+                Short excerpt text here...
+              </div>
+              <a class="blog-read-more" onclick="openBlogPost('post-id')" data-en="Read more →" data-zh="阅读更多 →">Read more →</a>
+            </div>
+          </div>
+          </div>
+          ====================================================== -->
+        </div>
+
+        <!-- ===== PHOTOGRAPHY PAGE ===== -->
+        <div class="page-section" id="page-photography">
+          <h2 class="section-title" data-en="Photography" data-zh="摄影作品">Photography</h2>
+          <div class="gallery-grid" id="photo-gallery"></div>
+        </div>
+
+        <!-- ===== TA WORKS PAGE ===== -->
+        <div class="page-section" id="page-ta-works">
+          <h2 class="section-title" data-en="Projects" data-zh="项目">Projects</h2>
+
+          <div class="projects-filter">
+            <button type="button" class="projects-filter-tag active" data-filter="all" data-en="ALL" data-zh="全部" onclick="filterProjects('all')">ALL</button>
+            <button type="button" class="projects-filter-tag" data-filter="game" data-en="GAME PROJECTS" data-zh="游戏项目" onclick="filterProjects('game')">GAME PROJECTS</button>
+            <button type="button" class="projects-filter-tag" data-filter="shader" data-en="SHADER WORKS" data-zh="着色器" onclick="filterProjects('shader')">SHADER WORKS</button>
+            <button type="button" class="projects-filter-tag" data-filter="tools" data-en="TOOLS" data-zh="工具" onclick="filterProjects('tools')">TOOLS</button>
+          </div>
+
+          <div class="gallery-grid" id="projects-grid">
+            <div class="gallery-item project-item" data-category="game" onclick="openProjectDetail('nt-ar')">
+              <div class="gallery-thumb g8">🧭</div>
+              <div class="gallery-caption" data-en="Northwest Territories AR Tour" data-zh="西北地区 AR 导览">Northwest Territories AR Tour</div>
+            </div>
+            <div class="gallery-item project-item" data-category="game" onclick="openProjectDetail('abstrakt')">
+              <div class="gallery-thumb g10">🧩</div>
+              <div class="gallery-caption" data-en="Abstrakt" data-zh="Abstrakt · 沉浸式 VR 体验">Abstrakt</div>
+            </div>
+            <div class="gallery-item project-item" data-category="game" onclick="openProjectDetail('buildport-xumia')">
+              <div class="gallery-thumb g9">🕹️</div>
+              <div class="gallery-caption" data-en="Buildport Xumia" data-zh="Buildport Xumia（Quest）">Buildport Xumia</div>
+            </div>
+            <div class="gallery-item project-item" data-category="game" onclick="openProjectDetail('fossa')">
+              <div class="gallery-thumb g9">🦊</div>
+              <div class="gallery-caption" data-en="Fossa Finder" data-zh="Fossa Finder">Fossa Finder</div>
+            </div>
+            <div class="gallery-item project-item" data-category="shader" onclick="openProjectDetail('mirror')">
+              <div class="gallery-thumb g11">🪞</div>
+              <div class="gallery-caption" data-en="Mirror Shader" data-zh="镜面着色器">Mirror Shader</div>
+            </div>
+            <div class="gallery-item project-item" data-category="shader" onclick="openProjectDetail('stylized-urp-water')">
+              <div class="gallery-thumb g11">🌊</div>
+              <div class="gallery-caption" data-en="Stylized URP Water Pipeline" data-zh="风格化 URP 水体管线">Stylized URP Water Pipeline</div>
+            </div>
+            <div class="gallery-item project-item" data-category="tools" onclick="openProjectDetail('maya-light')">
+              <div class="gallery-thumb g12">💡</div>
+              <div class="gallery-caption" data-en="Maya Auto Light Tool" data-zh="Maya 自动灯光工具">Maya Auto Light Tool</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 3D MODELING PAGE ===== -->
+        <div class="page-section" id="page-modeling">
+          <h2 class="section-title" data-en="3D Modeling" data-zh="建模作品">3D Modeling</h2>
+
+          <div class="sketchfab-grid">
+            <div class="sketchfab-card">
+              <div class="sketchfab-embed">
+                <iframe title="qqgirl" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" src="https://sketchfab.com/models/d28a6d2b0a1d46778cd4bd11477ad895/embed?autostart=1&camera=0&transparent=1"></iframe>
+              </div>
+              <div class="sketchfab-caption">qqgirl</div>
+            </div>
+            <div class="sketchfab-card">
+              <div class="sketchfab-embed">
+                <iframe title="usagi" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" src="https://sketchfab.com/models/85ef3584d85346228a5e9a111e4f39c8/embed?autostart=1&camera=0&transparent=1"></iframe>
+              </div>
+              <div class="sketchfab-caption">usagi</div>
+            </div>
+            <div class="sketchfab-card">
+              <div class="sketchfab-embed">
+                <iframe title="StarsMoonsMilk" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" src="https://sketchfab.com/models/098b27ed1f8e4fabb0abe6b6965f1c5f/embed?autostart=1&camera=0"></iframe>
+              </div>
+              <div class="sketchfab-caption">StarsMoonsMilk</div>
+            </div>
+            <div class="sketchfab-card">
+              <div class="sketchfab-embed">
+                <iframe title="Hard Surface Model" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" src="https://sketchfab.com/models/ef741bf03f6a4c87ab6512586598b4ad/embed?autostart=1&camera=0&transparent=1"></iframe>
+              </div>
+              <div class="sketchfab-caption">Hard Surface Model</div>
+            </div>
+          </div>
+        </div>
+
+        </div><!-- end content-inner-body -->
+      </div>
+    </main>
+
+    <!-- RIGHT SIDEBAR -->
+    <aside class="sidebar">
+
+      <div class="tama-embed-wrap">
+        <iframe
+          class="tama-embed"
+          src="https://autosam.github.io/Tamaweb"
+          frameborder="0"
+          scrolling="no"
+          allowfullscreen>
+        </iframe>
+      </div>
+
+      <div class="sidebar-box">
+        <div class="sidebar-box-title" data-en="LINKS" data-zh="链接">LINKS</div>
+        <div class="social-list">
+          <a href="/ascii-canvas.html" target="_blank" class="social-link"><span class="social-icon">✦</span> ASCII Canvas</a>
+          <a href="#" class="social-link"><span class="social-icon">🐙</span> GitHub</a>
+          <a href="#" class="social-link"><span class="social-icon">🐦</span> Twitter</a>
+          <a href="#" class="social-link"><span class="social-icon">📺</span> YouTube</a>
+          <a href="#" class="social-link"><span class="social-icon">🎮</span> itch.io</a>
+          <a href="#" class="social-link"><span class="social-icon">💼</span> ArtStation</a>
+          <a href="#" class="social-link"><span class="social-icon">📸</span> Instagram</a>
+        </div>
+      </div>
+
+      <!-- Music Player (iPod UI 图 + 透明点击区域) -->
+      <div class="sidebar-box player-widget">
+        <audio id="player-audio" preload="metadata"></audio>
+        <div class="player-ipod">
+          <button type="button" class="player-btn player-btn-vol-up" title="Volume +" aria-label="Volume up"></button>
+          <button type="button" class="player-btn player-btn-vol-down" title="Volume -" aria-label="Volume down"></button>
+          <button type="button" class="player-btn player-btn-prev" title="Previous" aria-label="Previous"></button>
+          <button type="button" class="player-btn player-btn-next" title="Next" aria-label="Next"></button>
+          <button type="button" class="player-btn player-btn-center" id="player-play-pause" title="Play / Pause" aria-label="Play Pause"></button>
+          <svg class="player-circle-text" viewBox="0 0 200 200">
+            <defs>
+              <path id="circlePath" d="M 100,100 m -56,0 a 56,56 0 1,1 112,0 a 56,56 0 1,1 -112,0" fill="none"/>
+            </defs>
+            <text>
+              <textPath id="player-track-title" href="#circlePath" startOffset="0%">♪ Lo-fi Beats ♪ ─ ♪ Lo-fi Beats ♪ ─ </textPath>
+            </text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Pic Log - Camera -->
+      <div class="camera-widget">
+        <div class="camera-screen" style="transition: opacity 0.15s ease;" onclick="openCameraPhoto()">
+          <img class="camera-photo" id="camera-photo" src="" alt="">
+          <div class="camera-counter"><span id="camera-idx">1</span> / <span id="camera-total">4</span></div>
+        </div>
+        <button class="camera-btn camera-btn-left" onclick="cameraNav(-1)" aria-label="Previous photo"></button>
+        <button class="camera-btn camera-btn-right" onclick="cameraNav(1)" aria-label="Next photo"></button>
+      </div>
+
+    </aside>
+
+    <div class="chain-right" aria-hidden="true"></div>
+
+  </div>
+
+  <!-- 右下角装饰 -->
+  <img class="corner-deco" src="/buttons-deco.png" alt="buttons decoration">
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-cloud">
+      <span data-en="[ Jojo's Portfolio (c) 2026 ] // Made with &lt;3" data-zh="[ jojo作品集 (c) 2026 ] // 用爱制作 &lt;3">[ Dream Portfolio (c) 2024 ] // Made with &lt;3</span>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ========== JAVASCRIPT ========== -->
+<script>
+// ===== FULLSCREEN BACKGROUND SHADER (FBM Dot Grid) =====
+(function() {
+  var canvas = document.getElementById('shader-bg');
+  if (!canvas) return;
+  var gl = canvas.getContext('webgl', {
+    alpha: false,
+    antialias: false,
+    depth: false,
+    stencil: false,
+    premultipliedAlpha: false,
+    preserveDrawingBuffer: true
+  }) || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  gl.clearColor(0.97, 0.93, 0.95, 1.0);
+
+  var vertSrc = [
+    'attribute vec2 a_position;',
+    'void main() { gl_Position = vec4(a_position, 0.0, 1.0); }'
+  ].join('\n');
+  var fragSrc = [
+    'precision highp float;',
+    'uniform vec2 iResolution;',
+    'float random(in vec2 st) {',
+    '  return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);',
+    '}',
+    'float noise(in vec2 st) {',
+    '  vec2 i = floor(st); vec2 f = fract(st);',
+    '  float a = random(i); float b = random(i + vec2(1.0, 0.0));',
+    '  float c = random(i + vec2(0.0, 1.0)); float d = random(i + vec2(1.0, 1.0));',
+    '  vec2 u = f * f * (3.0 - 2.0 * f);',
+    '  return mix(a, b, u.x) + (c - a)* u.y * (1.0 - u.x) + (d - b) * u.x * u.y;',
+    '}',
+    'float fbm(in vec2 st) {',
+    '  float value = 0.0; float amplitude = 0.5;',
+    '  for (int i = 0; i < 3; i++) { value += amplitude * noise(st); st *= 2.0; amplitude *= 0.5; }',
+    '  return value;',
+    '}',
+    'void main() {',
+    '  vec2 fragCoord = gl_FragCoord.xy;',
+    '  vec2 uv = fragCoord / iResolution.xy;',
+    '  uv.x *= iResolution.x / iResolution.y;',
+    '  vec2 noiseUV = uv * 3.0;',
+    '  float n = fbm(noiseUV);',
+    '  n = smoothstep(0.2, 0.8, n);',
+    '  float gridDensity = 80.0;',
+    '  vec2 gridUV = uv * gridDensity;',
+    '  vec2 cellUV = fract(gridUV) - 0.5;',
+    '  float dist = length(cellUV);',
+    '  float targetRadius = n * 0.6;',
+    '  float softness = 0.35;',
+    '  float dotMask = smoothstep(targetRadius + softness, targetRadius - softness, dist);',
+    '  vec3 bgColor = vec3(0.97, 0.93, 0.95);',
+    '  vec3 lightDot = vec3(0.28, 0.42, 0.72);',
+    '  vec3 deepDot  = vec3(0.10, 0.20, 0.42);',
+    '  vec3 dotColor  = mix(lightDot, deepDot, n);',
+    '  vec3 finalColor = mix(bgColor, dotColor, dotMask);',
+    '  gl_FragColor = vec4(finalColor, 1.0);',
+    '}'
+  ].join('\n');
+
+  var vsh = gl.createShader(gl.VERTEX_SHADER);
+  gl.shaderSource(vsh, vertSrc);
+  gl.compileShader(vsh);
+  var fsh = gl.createShader(gl.FRAGMENT_SHADER);
+  gl.shaderSource(fsh, fragSrc);
+  gl.compileShader(fsh);
+  if (!gl.getShaderParameter(vsh, gl.COMPILE_STATUS) || !gl.getShaderParameter(fsh, gl.COMPILE_STATUS)) return;
+  var prog = gl.createProgram();
+  gl.attachShader(prog, vsh);
+  gl.attachShader(prog, fsh);
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+  gl.useProgram(prog);
+  var locRes = gl.getUniformLocation(prog, 'iResolution');
+  var buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]), gl.STATIC_DRAW);
+  var locPos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(locPos);
+  gl.vertexAttribPointer(locPos, 2, gl.FLOAT, false, 0, 0);
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    draw();
+  }
+  function draw() {
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform2f(locRes, canvas.width, canvas.height);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+})();
+
+// ===== CAMERA PIC LOG =====
+let cameraPhotos = [];
+const cameraPlaceholder = '/camera-placeholder.png';
+let cameraIndex = 0;
+
+async function loadCameraPhotos() {
+  try {
+    const res = await fetch('/photos/photos.json');
+    const names = await res.json();
+    cameraPhotos = names.map(name => '/photos/' + name);
+  } catch(e) {
+    cameraPhotos = [];
+  }
+  if (cameraPhotos.length === 0) cameraPhotos = [cameraPlaceholder];
+  document.getElementById('camera-total').textContent = cameraPhotos.length;
+  cameraRender();
+}
+
+function cameraRender() {
+  const img = document.getElementById('camera-photo');
+  img.src = cameraPlaceholder;
+  img.style.display = 'block';
+  const real = new Image();
+  real.onload = function() { img.src = real.src; };
+  real.onerror = function() { img.src = cameraPlaceholder; };
+  real.src = cameraPhotos[cameraIndex];
+  document.getElementById('camera-idx').textContent = cameraIndex + 1;
+}
+
+function cameraNav(dir) {
+  if (cameraPhotos.length <= 1) return;
+  cameraIndex = (cameraIndex + dir + cameraPhotos.length) % cameraPhotos.length;
+  const img = document.getElementById('camera-photo');
+  img.src = cameraPlaceholder;
+  document.getElementById('camera-idx').textContent = cameraIndex + 1;
+  const real = new Image();
+  real.onload = function() { img.src = real.src; };
+  real.onerror = function() { img.src = cameraPlaceholder; };
+  real.src = cameraPhotos[cameraIndex];
+}
+
+function openCameraPhoto() {
+  if (!cameraPhotos.length || cameraPhotos[0] === cameraPlaceholder) return;
+  galleryPhotos = cameraPhotos.map(p => p.replace('/photos/', ''));
+  openPhotoLightbox(cameraIndex);
+}
+
+loadCameraPhotos();
+
+// ===== PHOTOGRAPHY GALLERY =====
+async function loadPhotoGallery() {
+  const grid = document.getElementById('photo-gallery');
+  if (!grid) return;
+  try {
+    const res = await fetch('/photos/photos.json');
+    const names = await res.json();
+    galleryPhotos = names;
+    grid.innerHTML = '';
+    names.forEach((name, idx) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = function() { openPhotoLightbox(idx); };
+      const thumb = document.createElement('div');
+      thumb.className = 'gallery-thumb';
+      thumb.style.cssText = 'background:url(/photos/' + name + ') center/cover no-repeat;';
+      item.appendChild(thumb);
+      grid.appendChild(item);
+    });
+  } catch(e) {}
+}
+let galleryPhotos = [];
+let galleryIndex = 0;
+
+function openPhotoLightbox(idx) {
+  galleryIndex = idx;
+  const lb = document.getElementById('lightbox');
+  const lbImage = document.getElementById('lb-image');
+  const lbTitle = document.getElementById('lb-title');
+  const lbBody = document.getElementById('lb-body');
+  lbTitle.textContent = '';
+  lbBody.textContent = '';
+  lbImage.className = 'lightbox-image';
+  lbImage.style.display = '';
+  renderGalleryPhoto();
+  document.getElementById('lb-titlebar').textContent =
+    (galleryIndex + 1) + ' / ' + galleryPhotos.length;
+  lb.classList.add('show');
+}
+
+function renderGalleryPhoto() {
+  const lbImage = document.getElementById('lb-image');
+  lbImage.innerHTML =
+    '<button class="lb-nav lb-nav-left" onclick="galleryNav(-1)">&#9664;</button>' +
+    '<img src="/photos/' + galleryPhotos[galleryIndex] + '" style="width:100%;height:auto;">' +
+    '<button class="lb-nav lb-nav-right" onclick="galleryNav(1)">&#9654;</button>';
+  document.getElementById('lb-titlebar').textContent =
+    (galleryIndex + 1) + ' / ' + galleryPhotos.length;
+}
+
+function galleryNav(dir) {
+  galleryIndex = (galleryIndex + dir + galleryPhotos.length) % galleryPhotos.length;
+  renderGalleryPhoto();
+}
+
+loadPhotoGallery();
+
+// ===== PAGE NAVIGATION =====
+let currentPage = 'about';
+
+function showPage(page) {
+  // Hide all sections
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  // Show target
+  const target = document.getElementById('page-' + page);
+  if (target) {
+    target.classList.add('active');
+    // Trigger animation
+    target.style.animation = 'none';
+    target.offsetHeight; // reflow
+    target.style.animation = 'fadeIn 0.4s ease';
+  }
+
+  // Update nav
+  document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+  document.querySelector(`.nav-link[data-page="${page}"]`)?.classList.add('active');
+
+  currentPage = page;
+
+  // 更新中间区域蓝色标题条文字（随当前页面与语言）
+  var titlebar = document.getElementById('content-titlebar');
+  if (titlebar) {
+    var titles = {
+      'about':     { en: 'About Me',     zh: '关于我' },
+      'blog':      { en: 'Blog',         zh: '博客' },
+      'photography': { en: 'Photography', zh: '摄影' },
+      'ta-works':  { en: 'Projects',     zh: '项目' },
+      'modeling':  { en: '3D Modeling',  zh: '建模作品' }
+    };
+    var t = titles[page] || { en: page, zh: page };
+    titlebar.setAttribute('data-en', t.en);
+    titlebar.setAttribute('data-zh', t.zh);
+    titlebar.textContent = (typeof currentLang !== 'undefined' && currentLang === 'zh') ? t.zh : t.en;
+  }
+
+  // Scroll content to top
+  document.querySelector('.content-inner-body').scrollTop = 0;
+}
+
+// ===== BLOG FILTER =====
+function filterBlog(category) {
+  document.querySelectorAll('.blog-filter-tag').forEach(t => t.classList.remove('active'));
+  document.querySelector(`.blog-filter-tag[data-filter="${category}"]`)?.classList.add('active');
+  document.querySelectorAll('#page-blog .blog-category').forEach(block => {
+    const match = category === 'all' || block.getAttribute('data-category') === category;
+    block.classList.toggle('hidden', !match);
+  });
+}
+document.querySelectorAll('.blog-filter-tag').forEach(btn => {
+  btn.addEventListener('click', function() { filterBlog(this.getAttribute('data-filter')); });
+});
+
+// ===== PROJECTS DETAIL (content from zzzyzzz.wixsite.com/joyz) =====
+function openProjectDetail(id) {
+  const projects = {
+    'nt-ar': {
+      en: {
+        title: 'Northwest Territories AR Walking Tour',
+        body: `<div class="project-meta"><span>Role: Full-Stack Unity Developer</span><span>Date: Dec 2021</span><span>Tools: Unity · Maya · Figma</span></div>
+<img class="project-media" src="/nt-ar-ui.png" alt="Northwest Territories AR Walking Tour UI" loading="lazy">
+<p>An augmented reality experience that immerses the user in a 3D environment showcasing the natural beauty of the Northwest Territories. Using their mobile phone, the user can walk around the region and explore what it has to offer while learning more about it.</p>
+<p>Built in Unity using the Universal Rendering Pipeline (URP), with ARCore XR Plug-in for Android and ARKit XR Plug-in for iOS.</p>`
+      },
+      zh: {
+        title: '西北地区 AR 步行导览',
+        body: `<div class="project-meta"><span>角色：Unity 全栈开发</span><span>时间：2021年12月</span><span>工具：Unity · Maya · Figma</span></div>
+<img class="project-media" src="/nt-ar-ui.png" alt="西北地区 AR 步行导览 UI" loading="lazy">
+<p>一款增强现实体验，将用户沉浸在展示西北地区自然之美的3D环境中。用户通过手机可以在区域内漫游，探索当地风貌并了解相关知识。</p>
+<p>基于 Unity URP 开发，Android 端使用 ARCore XR 插件，iOS 端使用 ARKit XR 插件。</p>`
+      }
+    },
+    'abstrakt': {
+      en: {
+        title: 'Abstrakt — Immersive VR Experience of Berlin\'s Holocaust Memorial',
+        body: `<div class="project-meta"><span>Role: Technical Artist · Developer</span><span>Date: May 2022</span><span>Tools: Unity · Maya · Figma</span></div>
+<div class="project-media-video">
+  <iframe
+    src="https://www.youtube.com/embed/dqz0SlF565o"
+    title="Abstrakt video"
+    loading="lazy"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+  ></iframe>
+</div>
+<img class="project-media" src="/abstrakt-shot.png" alt="Abstrakt screenshots" loading="lazy">
+<p>A collaboration between Zeros2Heroes and Flatland, a multi-disciplinary team from the Centre for Digital Media (CDM). The goal was to build a polished vertical slice of a fully featured immersive VR experience of the Holocaust-Mahnmal — Berlin's Holocaust Memorial — in Unity.</p>
+<p>My focus was on artifact and interaction design, contributing to the technical art pipeline and ensuring visual fidelity across the VR environment.</p>`
+      },
+      zh: {
+        title: 'Abstrakt — 柏林大屠杀纪念馆沉浸式 VR 体验',
+        body: `<div class="project-meta"><span>角色：技术美术 · 开发者</span><span>时间：2022年5月</span><span>工具：Unity · Maya · Figma</span></div>
+<div class="project-media-video">
+  <iframe
+    src="https://www.youtube.com/embed/dqz0SlF565o"
+    title="Abstrakt 视频"
+    loading="lazy"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen
+  ></iframe>
+</div>
+<img class="project-media" src="/abstrakt-shot.png" alt="Abstrakt 截图" loading="lazy">
+<p>Zeros2Heroes 与 Flatland 的合作项目，由数字媒体中心（CDM）多学科团队共同完成。目标是在 Unity 中构建一个完整的沉浸式 VR 体验的精良纵切片——还原柏林大屠杀纪念碑（Holocaust-Mahnmal）。</p>
+<p>我主要负责文物与交互设计，参与技术美术管线建设，确保 VR 环境整体视觉效果。</p>`
+      }
+    },
+    'buildport-xumia': {
+      en: {
+        title: 'Buildport Xumia (Meta Quest)',
+        body: `<div class="project-meta"><span>Role: Developer</span><span>Timeline: 2023 – 2025</span><span>Platform: Meta Quest</span></div>
+<p>Buildport Xumia is available on Meta Quest, featuring a Core Siege mode.</p>
+<a class="project-link" href="https://www.yumebau.com/project/buildport-xumia" target="_blank" rel="noopener noreferrer">↗ Project Page</a>
+<a class="project-link" href="https://www.meta.com/experiences/buildport-xumia/6784970791529351/" target="_blank" rel="noopener noreferrer">▶ Meta Quest</a>`
+      },
+      zh: {
+        title: 'Buildport Xumia（Meta Quest）',
+        body: `<div class="project-meta"><span>角色：Developer</span><span>时间：2023 – 2025</span><span>平台：Meta Quest</span></div>
+<p>Buildport Xumia 已在 Meta Quest 上线，并包含 Core Siege 模式。</p>
+<a class="project-link" href="https://www.yumebau.com/project/buildport-xumia" target="_blank" rel="noopener noreferrer">↗ 项目页面</a>
+<a class="project-link" href="https://www.meta.com/experiences/buildport-xumia/6784970791529351/" target="_blank" rel="noopener noreferrer">▶ Meta Quest</a>`
+      }
+    },
+    'fossa': {
+      en: {
+        title: 'Fossa Finder — VR Anatomy Education Tool',
+        body: `<div class="project-meta"><span>Platform: Web · VR</span><span>Timeline: 2018 – 2023</span><span>Status: Complete</span></div>
+<p>Dissections have long been the gold standard in anatomy education, but they are expensive and fail to expose deep, small structures like the Pterygopalatine Fossa — an important super-junction of nerves and blood vessels in the skull.</p>
+<p>Fossa Finder is an interactive VR tool where the Pterygopalatine Fossa becomes a defined 3D space the user can literally enter and explore — an experience only possible with virtual reality. Students can navigate the structures that are impossible to visualize from static 2D images.</p>
+<p>The project was led by Principal Investigator Pawel Kindler (PhD) and developed over multiple years by a student and staff team at UBC's Emerging Media Lab.</p>
+<a class="project-link" href="http://fossafinder.s3-website.ca-central-1.amazonaws.com/" target="_blank" rel="noopener noreferrer">▶ Live Demo</a>
+<a class="project-link" href="https://eml.ubc.ca/projects/fossa-finder/" target="_blank" rel="noopener noreferrer">↗ Project Page</a>
+<a class="project-link" href="https://github.com/ubcemergingmedialab/FossaFinder" target="_blank" rel="noopener noreferrer">⌥ GitHub</a>`
+      },
+      zh: {
+        title: 'Fossa Finder — VR 解剖教育工具',
+        body: `<div class="project-meta"><span>平台：Web · VR</span><span>周期：2018 – 2023</span><span>状态：已完成</span></div>
+<p>解剖实验一直是解剖学教育的标准方式，但成本高昂，且难以呈现颅内翼腭窝等深层细小结构——这是颅骨中重要的神经与血管交汇点。</p>
+<p>Fossa Finder 是一款交互式 VR 工具，将翼腭窝定义为用户可以"走进"并自由探索的 3D 空间，让此前只能从静态 2D 图像推测的结构变得直观可见。</p>
+<p>项目由 UBC 新兴媒体实验室 Pawel Kindler 博士主导，历经多年由学生与员工团队共同完成。</p>
+<a class="project-link" href="http://fossafinder.s3-website.ca-central-1.amazonaws.com/" target="_blank" rel="noopener noreferrer">▶ 在线演示</a>
+<a class="project-link" href="https://eml.ubc.ca/projects/fossa-finder/" target="_blank" rel="noopener noreferrer">↗ 项目页面</a>
+<a class="project-link" href="https://github.com/ubcemergingmedialab/FossaFinder" target="_blank" rel="noopener noreferrer">⌥ GitHub</a>`
+      }
+    },
+    'mirror': {
+      en: {
+        title: 'Mirror Shader',
+        body: `<div class="project-meta"><span>Date: 2022</span><span>Tools: Unity </span></div>
+<img class="project-media" src="/mirrorshader.gif" alt="Mirror Shader demo" loading="lazy">
+<img class="project-media" src="/mirrorshader-code.png" alt="Mirror Shader code" loading="lazy">
+<p>A realistic mirror shader built in Unity ShaderLab, using normal map textures and world reflection to create a dynamic, convincing mirror effect.</p>
+<p>Users can customize the look by adjusting:</p>
+<ul>
+  <li><strong>Diffuse Texture</strong>: assign a 2D texture for the diffuse component</li>
+  <li><strong>Bump Texture</strong>: 2D texture to simulate surface normals/bumps</li>
+  <li><strong>Bump Amount</strong>: slider (0–10) to control depth of the normal effect</li>
+  <li><strong>Brightness</strong>: slider (0–10) to adjust the intensity of the reflection</li>
+  <li><strong>Cube Map</strong>: provide a cube map for environmental reflections</li>
+</ul>`
+      },
+      zh: {
+        title: '镜面着色器',
+        body: `<div class="project-meta"><span>时间：2022</span><span>工具：Unity ShaderLab</span></div>
+<img class="project-media" src="/mirrorshader.gif" alt="镜面着色器演示" loading="lazy">
+<img class="project-media" src="/mirrorshader-code.png" alt="镜面着色器代码截图" loading="lazy">
+<p>使用 Unity ShaderLab 制作的真实感镜面着色器，利用法线贴图与世界反射创造逼真的镜面效果。</p>
+<p>用户可自由调整以下参数：</p>
+<ul>
+  <li><strong>漫反射贴图</strong>：为着色器漫射部分指定 2D 纹理</li>
+  <li><strong>凹凸贴图</strong>：用于模拟表面法线/凹凸的 2D 纹理</li>
+  <li><strong>凹凸强度</strong>：滑块（0–10），控制法线效果的深度</li>
+  <li><strong>亮度</strong>：滑块（0–10），调整反射强度</li>
+  <li><strong>立方体贴图</strong>：提供环境反射所用的 Cube Map</li>
+</ul>`
+      }
+    },
+    'stylized-urp-water': {
+      en: {
+        title: 'Stylized URP Water Pipeline',
+        body: `<div class="project-meta"><span>Role: Technical Artist / Programmer</span><span>Pipeline: Unity URP (Unlit foundation)</span></div>
+<p>A highly customized, performance-driven stylized water pipeline developed for the Universal Render Pipeline (URP). Built on an Unlit foundation to guarantee absolute color control for a vibrant, stylized aesthetic, this shader integrates custom-written shadow and reflection logic to ensure the water still feels physically anchored in the environment.</p>
+<div class="project-media-video">
+  <video class="project-media" controls preload="metadata" playsinline>
+    <source src="/ProjectsInfo/StylizedWater/StylizedWater.mp4" type="video/mp4">
+  </video>
+</div>
+<img class="project-media" src="/ProjectsInfo/StylizedWater/StylizedWaterShaderGraph.png" alt="Stylized URP Water Shader Graph" loading="lazy">
+<img class="project-media" src="/ProjectsInfo/StylizedWater/StylizedWaterProperties.png" alt="Stylized URP Water Properties" loading="lazy">
+<p><strong>Core Tech & Features:</strong></p>
+<ul>
+  <li><strong>Planar Reflections:</strong> Implemented a secondary camera and Render Texture setup to calculate mathematically accurate, real-time surface reflections.</li>
+  <li><strong>Custom Unlit Shadows:</strong> Engineered custom shadow-receiving logic within an Unlit graph, allowing the stylized water to receive dynamic cast shadows without the overhead or visual constraints of standard Lit materials.</li>
+  <li><strong>Procedural Glitter & Specular:</strong> Developed a noise-driven specular highlight system to create a dynamic, sparkling "glitter" effect that reacts to camera position and directional light.</li>
+  <li><strong>Depth-Buffer Integration:</strong> Features dynamic depth-color gradients and automated intersection foam for seamless blending with shores and environmental assets.</li>
+</ul>`
+      },
+      zh: {
+        title: '风格化 URP 水体管线',
+        body: `<div class="project-meta"><span>角色：Technical Artist / Programmer</span><span>管线：Unity URP（Unlit 基础）</span></div>
+<p>这是一个为 Universal Render Pipeline (URP) 定制的高性能风格化水体渲染管线。基于 Unlit 方案以保证绝对可控的色彩表现，并通过自定义阴影与反射逻辑，让风格化水体在视觉上依然与场景保持真实锚定关系。</p>
+<div class="project-media-video">
+  <video class="project-media" controls preload="metadata" playsinline>
+    <source src="/ProjectsInfo/StylizedWater/StylizedWater.mp4" type="video/mp4">
+  </video>
+</div>
+<img class="project-media" src="/ProjectsInfo/StylizedWater/StylizedWaterShaderGraph.png" alt="风格化 URP 水体 Shader Graph" loading="lazy">
+<img class="project-media" src="/ProjectsInfo/StylizedWater/StylizedWaterProperties.png" alt="风格化 URP 水体参数面板" loading="lazy">
+<p><strong>核心技术与特性：</strong></p>
+<ul>
+  <li><strong>平面反射：</strong>实现了二级相机 + Render Texture 方案，计算数学上准确的实时表面反射。</li>
+  <li><strong>Unlit 自定义受影：</strong>在 Unlit 图中实现自定义受影逻辑，使风格化水体可接收动态投射阴影，同时避免标准 Lit 材质的性能开销和视觉限制。</li>
+  <li><strong>程序化闪烁高光：</strong>开发了噪声驱动的高光系统，生成会随相机与方向光变化的动态“glitter”闪烁效果。</li>
+  <li><strong>深度缓冲集成：</strong>提供动态深度颜色渐变与自动交界泡沫，使水体与岸边及环境资产自然融合。</li>
+</ul>`
+      }
+    },
+    'maya-light': {
+      en: {
+        title: 'Maya Automatic Light Setting Tool',
+        body: `<div class="project-meta"><span>Software: Autodesk Maya</span><span>Language: Python · PySide2</span></div>
+<img class="project-media" src="/mayalighttool.gif" alt="Maya Auto Light Tool demo" loading="lazy">
+<p>A bespoke Maya plug-in that significantly enhances the lighting setup process, streamlining the creation of various lighting scenarios. Developed as a shelf tool with an intuitive icon for seamless integration into the Maya UI.</p>
+<p><strong>Development Process:</strong></p>
+<ul>
+  <li><strong>Research:</strong> Extensive study of lighting techniques from photography, cinema, and 3D rendering — including light types, positioning, and the impact of light on mood and scene composition.</li>
+  <li><strong>Technical Implementation:</strong> Scripted in Python, integrated with the PySide2 framework for the UI, ensuring compatibility within Maya.</li>
+  <li><strong>UI Design:</strong> Clear labeling and logical feature arrangement for intuitive, quick access.</li>
+</ul>`
+      },
+      zh: {
+        title: 'Maya 自动灯光设置工具',
+        body: `<div class="project-meta"><span>软件：Autodesk Maya</span><span>语言：Python · PySide2</span></div>
+<img class="project-media" src="/mayalighttool.gif" alt="Maya 自动灯光工具演示" loading="lazy">
+<p>一款专为 Autodesk Maya 定制的插件，大幅提升灯光布置效率，简化各类灯光方案的创建流程。以 shelf 工具形式集成，图标直观，与 Maya 界面无缝融合。</p>
+<p><strong>开发过程：</strong></p>
+<ul>
+  <li><strong>调研：</strong>深入研究摄影、电影和3D渲染中的灯光技术，包括光源类型、位置布置及灯光对氛围和画面构图的影响。</li>
+  <li><strong>技术实现：</strong>使用 Python 编写，结合 PySide2 框架构建用户界面，确保在 Maya 中的兼容性和流畅运行。</li>
+  <li><strong>界面设计：</strong>清晰的标签和逻辑性功能布局，实现直观快捷的操作体验。</li>
+</ul>`
+      }
+    },
+  };
+
+  const proj = projects[id];
+  if (!proj) return;
+
+  const lb = document.getElementById('lightbox');
+  const lbImage = document.getElementById('lb-image');
+  const lbTitle = document.getElementById('lb-title');
+  const lbBody = document.getElementById('lb-body');
+
+  lbImage.style.display = 'none';
+
+  const data = (typeof currentLang !== 'undefined' && currentLang === 'zh') ? proj.zh : proj.en;
+  lbTitle.textContent = data.title;
+  lbBody.innerHTML = data.body;
+
+  lb.classList.add('show');
+}
+
+function filterProjects(category) {
+  document.querySelectorAll('#page-ta-works .projects-filter-tag').forEach(t => t.classList.remove('active'));
+  document.querySelector(`#page-ta-works .projects-filter-tag[data-filter="${category}"]`)?.classList.add('active');
+  document.querySelectorAll('#page-ta-works .project-item').forEach(item => {
+    const c = item.getAttribute('data-category');
+    const match = category === 'all' || c === category;
+    item.style.display = match ? '' : 'none';
+  });
+}
+// Event delegation (works even if DOM changes)
+document.addEventListener('click', function (e) {
+  const btn = e.target.closest('#page-ta-works .projects-filter-tag');
+  if (!btn) return;
+  filterProjects(btn.getAttribute('data-filter'));
+});
+
+// ===== MUSIC PLAYER =====
+const playerAudio = document.getElementById('player-audio');
+const playerWidget = document.querySelector('.player-widget');
+const playerPlayBtn = document.getElementById('player-play-pause');
+const playerTitleEl = document.getElementById('player-track-title');
+const playlist = [
+  { title: 'Track 1', src: '/musics/1223404665.aac' },
+  { title: 'Track 2', src: '/musics/2882490570.aac' },
+  { title: 'Track 3', src: '/musics/M5000012Nn9M4Cj5Kk.mp3' },
+  { title: 'Track 4', src: '/musics/M500001Bbywq2gicae.mp3' },
+  { title: 'Track 5', src: '/musics/M500001pPc5g2offJg.mp3' },
+  { title: 'Track 6', src: '/musics/M5000028mTga2q1Y3l.mp3' },
+  { title: 'Track 7', src: '/musics/M800001VNLia021K3l.mp3' },
+];
+let playlistIndex = 0;
+
+function updatePlayerTrack() {
+  const track = playlist[playlistIndex];
+  if (track) {
+    playerTitleEl.textContent = '\u266A ' + track.title + ' \u266A \u2500 \u266A ' + track.title + ' \u266A \u2500 ';
+    playerAudio.src = track.src || '';
+  }
+}
+
+function playPause() {
+  if (playerAudio.paused) {
+    if (playerAudio.src) playerAudio.play();
+  } else {
+    playerAudio.pause();
+  }
+}
+
+function prevTrack() {
+  playlistIndex = (playlistIndex - 1 + playlist.length) % playlist.length;
+  updatePlayerTrack();
+  if (playerAudio.src) playerAudio.play();
+}
+
+function nextTrack() {
+  playlistIndex = (playlistIndex + 1) % playlist.length;
+  updatePlayerTrack();
+  if (playerAudio.src) playerAudio.play();
+}
+
+function volUp() {
+  playerAudio.volume = Math.min(1, (playerAudio.volume || 0.5) + 0.1);
+}
+function volDown() {
+  playerAudio.volume = Math.max(0, (playerAudio.volume || 0.5) - 0.1);
+}
+
+if (playerPlayBtn) playerPlayBtn.addEventListener('click', playPause);
+document.querySelector('.player-btn-prev')?.addEventListener('click', prevTrack);
+document.querySelector('.player-btn-next')?.addEventListener('click', nextTrack);
+document.querySelector('.player-btn-vol-up')?.addEventListener('click', volUp);
+document.querySelector('.player-btn-vol-down')?.addEventListener('click', volDown);
+
+playerAudio.addEventListener('play', () => playerWidget?.classList.add('playing'));
+playerAudio.addEventListener('pause', () => playerWidget?.classList.remove('playing'));
+playerAudio.addEventListener('ended', nextTrack);
+playerAudio.volume = 0.7;
+updatePlayerTrack();
+
+// ===== LANGUAGE SWITCHING =====
+let currentLang = 'en';
+
+function applyLangAndFont(lang) {
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+  if (lang === 'zh') {
+    document.body.style.fontFamily = "'JianbaoSong', 'Noto Serif SC', serif";
+  } else {
+    document.body.style.fontFamily = "'Press Start 2P', 'JianbaoSong', 'Noto Serif SC', serif";
+  }
+}
+
+function switchLang(lang) {
+  currentLang = lang;
+
+  // Update buttons
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  // Update all elements with data-en / data-zh
+  document.querySelectorAll('[data-en][data-zh]').forEach(el => {
+    const text = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-zh');
+    if (text) el.textContent = text;
+  });
+
+  applyLangAndFont(lang);
+}
+
+// 首屏与默认语言一致，避免 html 仍是 zh-CN 时用错字体
+applyLangAndFont(currentLang);
+
+// ===== LIGHTBOX / GALLERY =====
+function openGallery(titleEn, bgClass, descEn, titleZh, descZh) {
+  const lb = document.getElementById('lightbox');
+  const lbImage = document.getElementById('lb-image');
+  const lbTitle = document.getElementById('lb-title');
+  const lbBody = document.getElementById('lb-body');
+
+  // Get emoji from the gallery thumb
+  const thumbs = document.querySelectorAll('.' + bgClass);
+  let emoji = '🖼️';
+  if (thumbs.length > 0) {
+    emoji = thumbs[0].textContent.trim() || '🖼️';
+  }
+
+  lbImage.className = 'lightbox-image ' + bgClass;
+  lbImage.textContent = emoji;
+
+  if (currentLang === 'zh') {
+    lbTitle.textContent = titleZh || titleEn;
+    lbBody.textContent = descZh || descEn;
+  } else {
+    lbTitle.textContent = titleEn;
+    lbBody.textContent = descEn;
+  }
+
+  lb.classList.add('show');
+}
+
+function openBlogPost(id) {
+  const posts = {
+    'proc-gen': {
+      en: { title: 'The Beauty of Procedural Generation', body: 'Procedural generation is a method of creating data algorithmically as opposed to manually. In game development and technical art, this means we can create vast, unique worlds with relatively little human input.\n\nNoise functions like Perlin and Simplex noise form the backbone of many procedural systems. By layering multiple octaves of noise (a technique called Fractal Brownian Motion or fBm), we can create natural-looking terrains, clouds, and textures.\n\nL-systems provide another fascinating approach, particularly for vegetation. By defining simple rules and iterating them, we can grow complex branching structures that closely resemble real plants.\n\nThe beauty of procedural generation lies in its ability to create infinite variety from finite rules. As a technical artist, mastering these techniques opens up a world of creative possibilities.' },
+      zh: { title: '程序化生成之美', body: '程序化生成是一种通过算法而非手动创建数据的方法。在游戏开发和技术美术中，这意味着我们可以用相对较少的人工输入创建广阔而独特的世界。\n\n柏林噪声和单纯形噪声等噪声函数构成了许多程序化系统的基础。通过叠加多个八度的噪声（一种称为分形布朗运动或fBm的技术），我们可以创建看起来自然的地形、云层和纹理。\n\nL系统提供了另一种迷人的方法，特别适用于植被。通过定义简单的规则并迭代它们，我们可以生长出与真实植物非常相似的复杂分支结构。\n\n程序化生成的美在于它能够从有限的规则中创造无限的变化。作为技术美术，掌握这些技术开启了一个充满创意可能性的世界。' }
+    },
+    'journey': {
+      en: { title: 'My Journey into Technical Art', body: 'When I first started programming, I never imagined I would end up working at the intersection of art and technology. My journey began with pure software development — writing backends, building tools, and optimizing algorithms.\n\nBut everything changed when I started working on my first game project. I discovered shaders, and it was like finding a new language that spoke both to my logical mind and my creative soul.\n\nTechnical art is unique because it requires you to think like both an engineer and an artist. You need to understand rendering pipelines and GPU architecture, but also color theory and composition.\n\nIf you are considering this path, my advice is: start with shaders. Write a simple vertex/fragment shader from scratch. Break it. Fix it. Add features. The hands-on experience is invaluable.' },
+      zh: { title: '我的技术美术之旅', body: '当我刚开始编程时，我从未想过自己会在艺术与技术的交汇处工作。我的旅程始于纯粹的软件开发——编写后端、构建工具和优化算法。\n\n但当我开始参与第一个游戏项目时，一切都改变了。我发现了着色器，就像找到了一种新的语言，既能与我的逻辑思维对话，也能与我的创造力灵魂对话。\n\n技术美术的独特之处在于它要求你同时像工程师和艺术家一样思考。你需要理解渲染管线和GPU架构，但也需要理解色彩理论和构图。\n\n如果你正在考虑这条路，我的建议是：从着色器开始。从零开始编写一个简单的顶点/片段着色器。打破它。修复它。添加功能。实践经验是无价的。' }
+    },
+    'mobile-shader': {
+      en: { title: 'Optimizing Shaders for Mobile', body: 'Mobile GPU architecture differs significantly from desktop GPUs. Understanding tile-based deferred rendering (TBDR) is crucial for writing performant mobile shaders.\n\nKey optimization tips:\n\n1. Minimize texture samples — each sample is expensive on mobile.\n2. Avoid dependent texture reads where possible.\n3. Use half precision (mediump) whenever full precision isn\'t needed.\n4. Reduce overdraw — it\'s the number one performance killer on mobile.\n5. Use simpler lighting models — a modified Blinn-Phong often looks great at a fraction of the cost of full PBR.\n6. Profile on actual devices — emulators don\'t tell the full story.' },
+      zh: { title: '移动端着色器优化', body: '移动GPU架构与桌面GPU有着显著不同。理解基于瓦片的延迟渲染（TBDR）对于编写高性能移动着色器至关重要。\n\n关键优化技巧：\n\n1. 最小化纹理采样——每次采样在移动端都很昂贵。\n2. 尽可能避免依赖纹理读取。\n3. 在不需要全精度时使用半精度（mediump）。\n4. 减少过度绘制——这是移动端性能的头号杀手。\n5. 使用更简单的光照模型——修改后的Blinn-Phong通常看起来很好，成本只是完整PBR的一小部分。\n6. 在实际设备上分析——模拟器不能说明全部问题。' }
+    },
+    'photo-walk': {
+      en: { title: 'Weekend Photography Walk', body: 'This weekend I took my camera out for a walk through the autumn park. The golden light filtering through the leaves was absolutely breathtaking.\n\nAs a technical artist, I find that photography deeply informs my work with digital lighting. Understanding how real light behaves — how it scatters through fog, how it creates rim lighting on subjects, how color temperature shifts throughout the day — all of this translates directly to better shader work.\n\nI shot everything in RAW and spent the evening color grading. The process is remarkably similar to creating a color lookup table (LUT) for a game\'s post-processing pipeline. Art imitates life, and vice versa.' },
+      zh: { title: '周末摄影散步', body: '这个周末我带着相机在秋天的公园里散步。透过树叶的金色光线绝对令人叹为观止。\n\n作为技术美术，我发现摄影深深地影响了我的数字灯光工作。理解真实光线的行为方式——它如何在雾中散射、如何在主体上创建边缘光、色温如何在一天中变化——所有这些都直接转化为更好的着色器工作。\n\n我用RAW格式拍摄了所有照片，晚上花时间进行色彩校正。这个过程与为游戏的后处理管线创建颜色查找表（LUT）非常相似。艺术模仿生活，反之亦然。' }
+    }
+  };
+
+  const post = posts[id];
+  if (!post) return;
+
+  const lb = document.getElementById('lightbox');
+  const lbImage = document.getElementById('lb-image');
+  const lbTitle = document.getElementById('lb-title');
+  const lbBody = document.getElementById('lb-body');
+
+  lbImage.className = 'lightbox-image';
+  lbImage.style.display = 'none';
+
+  if (currentLang === 'zh') {
+    lbTitle.textContent = post.zh.title;
+    lbBody.textContent = post.zh.body;
+    lbBody.innerHTML = post.zh.body.replace(/\n/g, '<br>');
+  } else {
+    lbTitle.textContent = post.en.title;
+    lbBody.innerHTML = post.en.body.replace(/\n/g, '<br>');
+  }
+
+  lb.classList.add('show');
+}
+
+function closeLightbox(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById('lightbox').classList.remove('show');
+  document.getElementById('lb-image').style.display = '';
+}
+
+// ===== DRAGGABLE SIDEBAR BOXES =====
+(function initDraggableBoxes() {
+  const MAX_DRAG = 30;
+  const titles = document.querySelectorAll('.sidebar-box-title, .sidebar-box-title');
+  titles.forEach(title => {
+    const box = title.closest('.sidebar-box, .sidebar-box');
+    if (!box) return;
+    box.style.position = 'relative';
+    box.style.zIndex = '1';
+    let dragging = false, startX, startY, origX, origY;
+
+    title.style.cursor = 'grab';
+
+    title.addEventListener('mousedown', e => {
+      dragging = true;
+      title.style.cursor = 'grabbing';
+      startX = e.clientX;
+      startY = e.clientY;
+      const t = box.style.transform.match(/translate\((.+?)px,\s*(.+?)px\)/);
+      origX = t ? parseFloat(t[1]) : 0;
+      origY = t ? parseFloat(t[2]) : 0;
+      box.style.zIndex = '10';
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      let dx = origX + e.clientX - startX;
+      let dy = origY + e.clientY - startY;
+      dx = Math.max(-MAX_DRAG, Math.min(MAX_DRAG, dx));
+      dy = Math.max(-MAX_DRAG, Math.min(MAX_DRAG, dy));
+      box.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (!dragging) return;
+      dragging = false;
+      title.style.cursor = 'grab';
+      box.style.zIndex = '1';
+    });
+  });
+})();
+
+// ===== SPARKLE EFFECT =====
+function createSparkles() {
+  const container = document.getElementById('sparkles');
+  for (let i = 0; i < 70; i++) {
+    const sparkle = document.createElement('div');
+    sparkle.className = 'sparkle';
+    sparkle.style.left = Math.random() * 100 + '%';
+    sparkle.style.top = Math.random() * 100 + '%';
+    sparkle.style.animationDelay = Math.random() * 1.5 + 's';
+    sparkle.style.animationDuration = (2.5 + Math.random() * 2) + 's';
+    container.appendChild(sparkle);
+  }
+}
+createSparkles();
+
+// ===== VISITOR COUNTER (simulated) =====
+function animateCounter() {
+  const el = document.getElementById('visitor-count');
+  if (!el) return;
+  const target = 12847 + Math.floor(Math.random() * 10);
+  el.textContent = target.toLocaleString();
+}
+animateCounter();
+
+// ===== KEYBOARD SHORTCUTS =====
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeLightbox();
+});
+
+// ===== MAIN LAYOUT 背景 ASCII（public/main-layout-ascii.txt） =====
+(function() {
+  const pre = document.getElementById('main-layout-ascii-pre');
+  if (!pre) return;
+  fetch('/main-layout-ascii.txt')
+    .then((r) => r.text())
+    .then((t) => { pre.textContent = t.replace(/\r\n/g, '\n').trim(); })
+    .catch(() => {});
+})();
+
+// ===== CONTENT INNER ASCII 背景（public/content-inner-ascii.txt） =====
+(function() {
+  const pre = document.getElementById('content-inner-ascii-pre');
+  if (!pre) return;
+  fetch('/content-inner-ascii.txt')
+    .then((r) => r.text())
+    .then((t) => { pre.textContent = t.replace(/\r\n/g, '\n').trim(); })
+    .catch(() => {});
+})();
+
+// ===== MAIN LAYOUT 边框：用 Edges 图片拼接（固定间距 + 重复铺满，与 CSS --edge-tile / --edge-gap 一致） =====
+(function() {
+  const EDGES = [
+    '0000FLAPJACK.gif', '0000ROBBIE.gif', '0000SPORT.gif', '0000STEPH.gif',
+    '000ARIEL.gif', '000AURORA.gif', '000BELLE.gif', '000BETTY.gif',
+    '000CINDY.gif', '000JAZZ.gif', '000SNOW.gif', '000TIANA.gif',
+    'artwork-muertos.gif', 'artwork-vampire.gif', 'gobbolino.gif', 'HalloweenKitty.gif',
+    'kitty-antikrist.gif', 'kitty-deer.gif', 'kitty-floraltears.png', 'kitty-pc-kitty_lina.gif',
+    'kitty-santa.gif', 'kitty-snow.gif', 'kitty-sock.gif', 'kitty-sol-garf.gif',
+    'kitty-tree.gif', 'kittyaisha.gif', 'kittybyartwork.gif', 'kittyclub-joroki.png',
+    'skitty.gif', 'vampirekitty.gif', 'witchcat.gif'
+  ];
+  const base = '/Edges/';
+  const TILE = 20;
+  const GAP = 4;
+  const STRIDE = TILE + GAP;
+  function countTiles(alongPx) {
+    if (alongPx <= 0) return 1;
+    return Math.max(1, Math.ceil((alongPx + GAP) / STRIDE));
+  }
+  function fillEdge(el, count) {
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const tile = document.createElement('span');
+      tile.className = 'main-layout-edge-tile';
+      const img = document.createElement('img');
+      img.src = base + EDGES[i % EDGES.length];
+      img.alt = '';
+      tile.appendChild(img);
+      el.appendChild(tile);
+    }
+  }
+  function fillEdges() {
+    const ml = document.querySelector('.main-layout');
+    if (!ml) return;
+    const bot = document.querySelector('.main-layout-edge--bottom');
+    const left = document.querySelector('.main-layout-edge--left');
+    const right = document.querySelector('.main-layout-edge--right');
+    const w = ml.offsetWidth;
+    const h = ml.offsetHeight;
+    if (w === 0 || h === 0) {
+      setTimeout(fillEdges, 200);
+      return;
+    }
+    const bw = bot ? (bot.clientWidth || ml.clientWidth) : 0;
+    const lh = left ? (left.clientHeight || ml.clientHeight) : 0;
+    const rh = right ? (right.clientHeight || ml.clientHeight) : 0;
+    fillEdge(bot, countTiles(bw));
+    fillEdge(left, countTiles(lh));
+    fillEdge(right, countTiles(rh));
+  }
+  function runFill() {
+    requestAnimationFrame(fillEdges);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runFill);
+  } else {
+    runFill();
+  }
+  window.addEventListener('load', fillEdges);
+  if (typeof ResizeObserver !== 'undefined') {
+    let t;
+    const ml = document.querySelector('.main-layout');
+    if (ml) {
+      const ro = new ResizeObserver(() => {
+        clearTimeout(t);
+        t = setTimeout(fillEdges, 80);
+      });
+      ro.observe(ml);
+    }
+  }
+})();
+</script>
+
+</body>
 </html>
