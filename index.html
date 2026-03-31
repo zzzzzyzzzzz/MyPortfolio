@@ -414,7 +414,7 @@
       <div class="sidebar-box">
         <div class="sidebar-box-title" data-en="LINKS" data-zh="链接">LINKS</div>
         <div class="social-list">
-          <a href="/ascii-canvas.html" target="_blank" class="social-link"><span class="social-icon">✦</span> ASCII Canvas</a>
+          <a href="./ascii-canvas.html" target="_blank" class="social-link"><span class="social-icon">✦</span> ASCII Canvas</a>
           <a href="#" class="social-link"><span class="social-icon">🐙</span> GitHub</a>
           <a href="#" class="social-link"><span class="social-icon">🐦</span> Twitter</a>
           <a href="#" class="social-link"><span class="social-icon">📺</span> YouTube</a>
@@ -474,6 +474,7 @@
 
 <!-- ========== JAVASCRIPT ========== -->
 <script>
+var BASE = '/Portfolio/';
 // ===== FULLSCREEN BACKGROUND SHADER (FBM Dot Grid) =====
 (function() {
   var canvas = document.getElementById('shader-bg');
@@ -572,14 +573,14 @@
 
 // ===== CAMERA PIC LOG =====
 let cameraPhotos = [];
-const cameraPlaceholder = '/camera-placeholder.png';
+const cameraPlaceholder = BASE + 'camera-placeholder.png';
 let cameraIndex = 0;
 
 async function loadCameraPhotos() {
   try {
-    const res = await fetch('/photos/photos.json');
+    const res = await fetch(BASE + 'photos/photos.json');
     const names = await res.json();
-    cameraPhotos = names.map(name => '/photos/' + name);
+    cameraPhotos = names.map(name => BASE + 'photos/' + name);
   } catch(e) {
     cameraPhotos = [];
   }
@@ -613,7 +614,7 @@ function cameraNav(dir) {
 
 function openCameraPhoto() {
   if (!cameraPhotos.length || cameraPhotos[0] === cameraPlaceholder) return;
-  galleryPhotos = cameraPhotos.map(p => p.replace('/photos/', ''));
+  galleryPhotos = cameraPhotos.map(p => p.split('/').pop());
   openPhotoLightbox(cameraIndex);
 }
 
@@ -624,7 +625,7 @@ async function loadPhotoGallery() {
   const grid = document.getElementById('photo-gallery');
   if (!grid) return;
   try {
-    const res = await fetch('/photos/photos.json');
+    const res = await fetch(BASE + 'photos/photos.json');
     const names = await res.json();
     galleryPhotos = names;
     grid.innerHTML = '';
@@ -634,7 +635,7 @@ async function loadPhotoGallery() {
       item.onclick = function() { openPhotoLightbox(idx); };
       const thumb = document.createElement('div');
       thumb.className = 'gallery-thumb';
-      thumb.style.cssText = 'background:url(/photos/' + name + ') center/cover no-repeat;';
+      thumb.style.cssText = 'background:url(' + BASE + 'photos/' + name + ') center/cover no-repeat;';
       item.appendChild(thumb);
       grid.appendChild(item);
     });
@@ -663,7 +664,7 @@ function renderGalleryPhoto() {
   const lbImage = document.getElementById('lb-image');
   lbImage.innerHTML =
     '<button class="lb-nav lb-nav-left" onclick="galleryNav(-1)">&#9664;</button>' +
-    '<img src="/photos/' + galleryPhotos[galleryIndex] + '" style="width:100%;height:auto;">' +
+    '<img src="' + BASE + 'photos/' + galleryPhotos[galleryIndex] + '" style="width:100%;height:auto;">' +
     '<button class="lb-nav lb-nav-right" onclick="galleryNav(1)">&#9654;</button>';
   document.getElementById('lb-titlebar').textContent =
     (galleryIndex + 1) + ' / ' + galleryPhotos.length;
@@ -738,14 +739,14 @@ function openProjectDetail(id) {
       en: {
         title: 'Northwest Territories AR Walking Tour',
         body: `<div class="project-meta"><span>Role: Full-Stack Unity Developer</span><span>Date: Dec 2021</span><span>Tools: Unity · Maya · Figma</span></div>
-<img class="project-media" src="/nt-ar-ui.png" alt="Northwest Territories AR Walking Tour UI" loading="lazy">
+<img class="project-media" src="${BASE}nt-ar-ui.png" alt="Northwest Territories AR Walking Tour UI" loading="lazy">
 <p>An augmented reality experience that immerses the user in a 3D environment showcasing the natural beauty of the Northwest Territories. Using their mobile phone, the user can walk around the region and explore what it has to offer while learning more about it.</p>
 <p>Built in Unity using the Universal Rendering Pipeline (URP), with ARCore XR Plug-in for Android and ARKit XR Plug-in for iOS.</p>`
       },
       zh: {
         title: '西北地区 AR 步行导览',
         body: `<div class="project-meta"><span>角色：Unity 全栈开发</span><span>时间：2021年12月</span><span>工具：Unity · Maya · Figma</span></div>
-<img class="project-media" src="/nt-ar-ui.png" alt="西北地区 AR 步行导览 UI" loading="lazy">
+<img class="project-media" src="${BASE}nt-ar-ui.png" alt="西北地区 AR 步行导览 UI" loading="lazy">
 <p>一款增强现实体验，将用户沉浸在展示西北地区自然之美的3D环境中。用户通过手机可以在区域内漫游，探索当地风貌并了解相关知识。</p>
 <p>基于 Unity URP 开发，Android 端使用 ARCore XR 插件，iOS 端使用 ARKit XR 插件。</p>`
       }
@@ -764,7 +765,7 @@ function openProjectDetail(id) {
     allowfullscreen
   ></iframe>
 </div>
-<img class="project-media" src="/abstrakt-shot.png" alt="Abstrakt screenshots" loading="lazy">
+<img class="project-media" src="${BASE}abstrakt-shot.png" alt="Abstrakt screenshots" loading="lazy">
 <p>A collaboration between Zeros2Heroes and Flatland, a multi-disciplinary team from the Centre for Digital Media (CDM). The goal was to build a polished vertical slice of a fully featured immersive VR experience of the Holocaust-Mahnmal — Berlin's Holocaust Memorial — in Unity.</p>
 <p>My focus was on artifact and interaction design, contributing to the technical art pipeline and ensuring visual fidelity across the VR environment.</p>`
       },
@@ -781,7 +782,7 @@ function openProjectDetail(id) {
     allowfullscreen
   ></iframe>
 </div>
-<img class="project-media" src="/abstrakt-shot.png" alt="Abstrakt 截图" loading="lazy">
+<img class="project-media" src="${BASE}abstrakt-shot.png" alt="Abstrakt 截图" loading="lazy">
 <p>Zeros2Heroes 与 Flatland 的合作项目，由数字媒体中心（CDM）多学科团队共同完成。目标是在 Unity 中构建一个完整的沉浸式 VR 体验的精良纵切片——还原柏林大屠杀纪念碑（Holocaust-Mahnmal）。</p>
 <p>我主要负责文物与交互设计，参与技术美术管线建设，确保 VR 环境整体视觉效果。</p>`
       }
@@ -828,8 +829,8 @@ function openProjectDetail(id) {
       en: {
         title: 'Mirror Shader',
         body: `<div class="project-meta"><span>Date: 2022</span><span>Tools: Unity </span></div>
-<img class="project-media" src="/mirrorshader.gif" alt="Mirror Shader demo" loading="lazy">
-<img class="project-media" src="/mirrorshader-code.png" alt="Mirror Shader code" loading="lazy">
+<img class="project-media" src="${BASE}mirrorshader.gif" alt="Mirror Shader demo" loading="lazy">
+<img class="project-media" src="${BASE}mirrorshader-code.png" alt="Mirror Shader code" loading="lazy">
 <p>A realistic mirror shader built in Unity ShaderLab, using normal map textures and world reflection to create a dynamic, convincing mirror effect.</p>
 <p>Users can customize the look by adjusting:</p>
 <ul>
@@ -843,8 +844,8 @@ function openProjectDetail(id) {
       zh: {
         title: '镜面着色器',
         body: `<div class="project-meta"><span>时间：2022</span><span>工具：Unity ShaderLab</span></div>
-<img class="project-media" src="/mirrorshader.gif" alt="镜面着色器演示" loading="lazy">
-<img class="project-media" src="/mirrorshader-code.png" alt="镜面着色器代码截图" loading="lazy">
+<img class="project-media" src="${BASE}mirrorshader.gif" alt="镜面着色器演示" loading="lazy">
+<img class="project-media" src="${BASE}mirrorshader-code.png" alt="镜面着色器代码截图" loading="lazy">
 <p>使用 Unity ShaderLab 制作的真实感镜面着色器，利用法线贴图与世界反射创造逼真的镜面效果。</p>
 <p>用户可自由调整以下参数：</p>
 <ul>
@@ -863,11 +864,11 @@ function openProjectDetail(id) {
 <p>A highly customized, performance-driven stylized water pipeline developed for the Universal Render Pipeline (URP). Built on an Unlit foundation to guarantee absolute color control for a vibrant, stylized aesthetic, this shader integrates custom-written shadow and reflection logic to ensure the water still feels physically anchored in the environment.</p>
 <div class="project-media-video">
   <video class="project-media" controls preload="metadata" playsinline>
-    <source src="/ProjectsInfo/StylizedWater/StylizedWater.mp4" type="video/mp4">
+    <source src="${BASE}ProjectsInfo/StylizedWater/StylizedWater.mp4" type="video/mp4">
   </video>
 </div>
-<img class="project-media" src="/ProjectsInfo/StylizedWater/StylizedWaterShaderGraph.png" alt="Stylized URP Water Shader Graph" loading="lazy">
-<img class="project-media" src="/ProjectsInfo/StylizedWater/StylizedWaterProperties.png" alt="Stylized URP Water Properties" loading="lazy">
+<img class="project-media" src="${BASE}ProjectsInfo/StylizedWater/StylizedWaterShaderGraph.png" alt="Stylized URP Water Shader Graph" loading="lazy">
+<img class="project-media" src="${BASE}ProjectsInfo/StylizedWater/StylizedWaterProperties.png" alt="Stylized URP Water Properties" loading="lazy">
 <p><strong>Core Tech & Features:</strong></p>
 <ul>
   <li><strong>Planar Reflections:</strong> Implemented a secondary camera and Render Texture setup to calculate mathematically accurate, real-time surface reflections.</li>
@@ -882,11 +883,11 @@ function openProjectDetail(id) {
 <p>这是一个为 Universal Render Pipeline (URP) 定制的高性能风格化水体渲染管线。基于 Unlit 方案以保证绝对可控的色彩表现，并通过自定义阴影与反射逻辑，让风格化水体在视觉上依然与场景保持真实锚定关系。</p>
 <div class="project-media-video">
   <video class="project-media" controls preload="metadata" playsinline>
-    <source src="/ProjectsInfo/StylizedWater/StylizedWater.mp4" type="video/mp4">
+    <source src="${BASE}ProjectsInfo/StylizedWater/StylizedWater.mp4" type="video/mp4">
   </video>
 </div>
-<img class="project-media" src="/ProjectsInfo/StylizedWater/StylizedWaterShaderGraph.png" alt="风格化 URP 水体 Shader Graph" loading="lazy">
-<img class="project-media" src="/ProjectsInfo/StylizedWater/StylizedWaterProperties.png" alt="风格化 URP 水体参数面板" loading="lazy">
+<img class="project-media" src="${BASE}ProjectsInfo/StylizedWater/StylizedWaterShaderGraph.png" alt="风格化 URP 水体 Shader Graph" loading="lazy">
+<img class="project-media" src="${BASE}ProjectsInfo/StylizedWater/StylizedWaterProperties.png" alt="风格化 URP 水体参数面板" loading="lazy">
 <p><strong>核心技术与特性：</strong></p>
 <ul>
   <li><strong>平面反射：</strong>实现了二级相机 + Render Texture 方案，计算数学上准确的实时表面反射。</li>
@@ -900,7 +901,7 @@ function openProjectDetail(id) {
       en: {
         title: 'Maya Automatic Light Setting Tool',
         body: `<div class="project-meta"><span>Software: Autodesk Maya</span><span>Language: Python · PySide2</span></div>
-<img class="project-media" src="/mayalighttool.gif" alt="Maya Auto Light Tool demo" loading="lazy">
+<img class="project-media" src="${BASE}mayalighttool.gif" alt="Maya Auto Light Tool demo" loading="lazy">
 <p>A bespoke Maya plug-in that significantly enhances the lighting setup process, streamlining the creation of various lighting scenarios. Developed as a shelf tool with an intuitive icon for seamless integration into the Maya UI.</p>
 <p><strong>Development Process:</strong></p>
 <ul>
@@ -912,7 +913,7 @@ function openProjectDetail(id) {
       zh: {
         title: 'Maya 自动灯光设置工具',
         body: `<div class="project-meta"><span>软件：Autodesk Maya</span><span>语言：Python · PySide2</span></div>
-<img class="project-media" src="/mayalighttool.gif" alt="Maya 自动灯光工具演示" loading="lazy">
+<img class="project-media" src="${BASE}mayalighttool.gif" alt="Maya 自动灯光工具演示" loading="lazy">
 <p>一款专为 Autodesk Maya 定制的插件，大幅提升灯光布置效率，简化各类灯光方案的创建流程。以 shelf 工具形式集成，图标直观，与 Maya 界面无缝融合。</p>
 <p><strong>开发过程：</strong></p>
 <ul>
@@ -963,13 +964,13 @@ const playerWidget = document.querySelector('.player-widget');
 const playerPlayBtn = document.getElementById('player-play-pause');
 const playerTitleEl = document.getElementById('player-track-title');
 const playlist = [
-  { title: 'Track 1', src: '/musics/1223404665.aac' },
-  { title: 'Track 2', src: '/musics/2882490570.aac' },
-  { title: 'Track 3', src: '/musics/M5000012Nn9M4Cj5Kk.mp3' },
-  { title: 'Track 4', src: '/musics/M500001Bbywq2gicae.mp3' },
-  { title: 'Track 5', src: '/musics/M500001pPc5g2offJg.mp3' },
-  { title: 'Track 6', src: '/musics/M5000028mTga2q1Y3l.mp3' },
-  { title: 'Track 7', src: '/musics/M800001VNLia021K3l.mp3' },
+  { title: 'Track 1', src: BASE + 'musics/1223404665.aac' },
+  { title: 'Track 2', src: BASE + 'musics/2882490570.aac' },
+  { title: 'Track 3', src: BASE + 'musics/M5000012Nn9M4Cj5Kk.mp3' },
+  { title: 'Track 4', src: BASE + 'musics/M500001Bbywq2gicae.mp3' },
+  { title: 'Track 5', src: BASE + 'musics/M500001pPc5g2offJg.mp3' },
+  { title: 'Track 6', src: BASE + 'musics/M5000028mTga2q1Y3l.mp3' },
+  { title: 'Track 7', src: BASE + 'musics/M800001VNLia021K3l.mp3' },
 ];
 let playlistIndex = 0;
 
@@ -1204,7 +1205,7 @@ document.addEventListener('keydown', (e) => {
 (function() {
   const pre = document.getElementById('main-layout-ascii-pre');
   if (!pre) return;
-  fetch('/main-layout-ascii.txt')
+  fetch(BASE + 'main-layout-ascii.txt')
     .then((r) => r.text())
     .then((t) => { pre.textContent = t.replace(/\r\n/g, '\n').trim(); })
     .catch(() => {});
@@ -1214,7 +1215,7 @@ document.addEventListener('keydown', (e) => {
 (function() {
   const pre = document.getElementById('content-inner-ascii-pre');
   if (!pre) return;
-  fetch('/content-inner-ascii.txt')
+  fetch(BASE + 'content-inner-ascii.txt')
     .then((r) => r.text())
     .then((t) => { pre.textContent = t.replace(/\r\n/g, '\n').trim(); })
     .catch(() => {});
@@ -1232,7 +1233,7 @@ document.addEventListener('keydown', (e) => {
     'kitty-tree.gif', 'kittyaisha.gif', 'kittybyartwork.gif', 'kittyclub-joroki.png',
     'skitty.gif', 'vampirekitty.gif', 'witchcat.gif'
   ];
-  const base = '/Edges/';
+  const edgeBase = BASE + 'Edges/';
   const TILE = 20;
   const GAP = 4;
   const STRIDE = TILE + GAP;
@@ -1247,7 +1248,7 @@ document.addEventListener('keydown', (e) => {
       const tile = document.createElement('span');
       tile.className = 'main-layout-edge-tile';
       const img = document.createElement('img');
-      img.src = base + EDGES[i % EDGES.length];
+      img.src = edgeBase + EDGES[i % EDGES.length];
       img.alt = '';
       tile.appendChild(img);
       el.appendChild(tile);
