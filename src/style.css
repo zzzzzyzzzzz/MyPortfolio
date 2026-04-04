@@ -2,9 +2,25 @@
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
 @font-face {
+  font-family: 'Velvelyne';
+  src: url('../fonts/Velvelyne-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'JianbaoSong';
   src: local('简报宋体'), local('JianbaoSong');
   unicode-range: U+4E00-9FFF, U+3000-303F, U+FF00-FFEF;
+}
+
+@font-face {
+  font-family: 'MechSong-Extralight';
+  src: url('../fonts/MechSong-Extralight-2.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 :root {
@@ -35,31 +51,34 @@
     0 0 0 1px var(--pink-border);
 
   /* ========== Typography: English（改这里调英文的字体和字号） ========== */
-  --font-body: 'Press Start 2P', 'JianbaoSong', 'Noto Serif SC', serif;
-  --font-heading: 'Press Start 2P', 'Noto Serif SC', serif;
-  --font-mono: 'Press Start 2P', monospace;
+  --font-body: 'Velvelyne', 'JianbaoSong', 'Noto Serif SC', serif;
+  --font-heading: 'Velvelyne', 'Noto Serif SC', serif;
+  --font-mono: 'Velvelyne', monospace;
   --font-deco: 'Noto Serif SC', serif;
   --size-base: 11px;
-  --size-body: 10px;
-  --size-title: 14px;
+  --size-body: 19x;
+  --size-title: 19px;
   --size-subtitle: 11px;
   --size-nav: 8px;
   --size-sidebar-title: 8px;
   --size-profile: 9px;
-  --size-blog-title: 10px;
+  --size-blog-title: 19px;
   --size-blog-excerpt: 9px;
-  --size-small: 8px;
+  --size-small: 12px;
   --size-tiny: 7px;
+  --size-content: 19px;
+  --size-titlebar: 13px;
   --line-height-base: 1.8;
   --line-height-body: 2;
 }
 
 /* ========== Typography: 中文（改这里调中文的字体和字号） ========== */
 html[lang="zh-CN"] {
-  --font-body: 'JianbaoSong', 'Noto Serif SC', serif;
-  --font-heading: 'Noto Serif SC', 'JianbaoSong', serif;
-  --font-mono: 'JianbaoSong', 'Noto Serif SC', monospace;
-  --font-deco: 'Noto Serif SC', serif;
+  /* 优先英文字体（Latin），中文缺字再回退到中文字体（CJK） */
+  --font-body: 'Velvelyne', 'MechSong-Extralight', 'JianbaoSong', 'Noto Serif SC', serif;
+  --font-heading: 'Velvelyne', 'MechSong-Extralight', 'Noto Serif SC', 'JianbaoSong', serif;
+  --font-mono: 'Velvelyne', 'MechSong-Extralight', 'Noto Serif SC', 'JianbaoSong', monospace;
+  --font-deco: 'Velvelyne', 'MechSong-Extralight', 'Noto Serif SC', serif;
   --size-base: 12px;
   --size-body: 15px;
   --size-title: 20px;
@@ -71,6 +90,8 @@ html[lang="zh-CN"] {
   --size-blog-excerpt: 10px;
   --size-small: 9px;
   --size-tiny: 7px;
+  --size-content: 20px;
+  --size-titlebar: 13px;
   --line-height-base: 1.8;
   --line-height-body: 2;
 }
@@ -596,8 +617,132 @@ body {
   gap: 4px;
   align-items: center;
 }
+
+/* Language switch — rocker (原版 1:1 还原，只换颜色) */
+/* 未勾选：右侧 EN 高亮平放，左侧 简 斜退 */
+/* 勾选：左侧 简 高亮平放，右侧 EN 斜退 */
+.lang-switch .rocker {
+  display: inline-block;
+  position: relative;
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--text-light);       /* 原版 #888 */
+  width: 7em;
+  height: 4em;
+  overflow: hidden;
+  border-bottom: 0.5em solid var(--cream-dark); /* 原版 #eee */
+}
+
+.lang-switch .rocker-small {
+  font-size: 0.75em;
+  margin: 1em;
+}
+
+.lang-switch .rocker::before {
+  content: "";
+  position: absolute;
+  top: 0.5em;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--blue-nav-mid); /* 原版 #999 */
+  border: 0.5em solid var(--cream-dark); /* 原版 #eee */
+  border-bottom: 0;
+}
+
+.lang-switch .rocker input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.lang-switch .switch-left,
+.lang-switch .switch-right {
+  cursor: pointer;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5em;
+  width: 3em;
+  transition: 0.2s;
+  user-select: none;
+}
+
+.lang-switch .switch-left {
+  height: 2.4em;
+  width: 2.75em;
+  left: 0.85em;
+  bottom: 0.4em;
+  background-color: var(--cream);       /* 原版 #ddd */
+  transform: rotate(15deg) skewX(15deg);
+}
+
+.lang-switch .switch-right {
+  right: 0.5em;
+  bottom: 0;
+  background-color: var(--pink-mid);    /* 原版 #bd5757 */
+  color: var(--cream);                  /* 原版 #fff */
+}
+
+.lang-switch .switch-left::before,
+.lang-switch .switch-right::before {
+  content: "";
+  position: absolute;
+  width: 0.4em;
+  height: 2.45em;
+  bottom: -0.45em;
+  background-color: var(--cream-dark);  /* 原版 #ccc */
+  transform: skewY(-65deg);
+}
+
+.lang-switch .switch-left::before {
+  left: -0.4em;
+}
+
+.lang-switch .switch-right::before {
+  right: -0.375em;
+  background-color: transparent;
+  transform: skewY(65deg);
+}
+
+.lang-switch input:checked + .switch-left {
+  background-color: var(--blue-nav-dark); /* 原版 #0084d0 */
+  color: var(--cream);                    /* 原版 #fff */
+  bottom: 0px;
+  left: 0.5em;
+  height: 2.5em;
+  width: 3em;
+  transform: rotate(0deg) skewX(0deg);
+}
+
+.lang-switch input:checked + .switch-left::before {
+  background-color: transparent;
+  width: 3.0833em;
+}
+
+.lang-switch input:checked + .switch-left + .switch-right {
+  background-color: var(--cream);       /* 原版 #ddd */
+  color: var(--text-light);             /* 原版 #888 */
+  bottom: 0.4em;
+  right: 0.8em;
+  height: 2.4em;
+  width: 2.75em;
+  transform: rotate(-15deg) skewX(-15deg);
+}
+
+.lang-switch input:checked + .switch-left + .switch-right::before {
+  background-color: var(--cream-dark);  /* 原版 #ccc */
+}
+
+.lang-switch input:focus + .switch-left { color: var(--blue-nav-dark); }
+.lang-switch input:checked:focus + .switch-left { color: var(--cream); }
+.lang-switch input:focus + .switch-left + .switch-right { color: var(--cream); }
+.lang-switch input:checked:focus + .switch-left + .switch-right { color: var(--text-light); }
 .lang-btn {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 14px;
   padding: 4px 10px;
   border: 2px solid hsl(28 20% 38%);
@@ -658,6 +803,7 @@ body {
   inset: 0;
   margin: 0;
   padding: 0px 0px;
+  /* ASCII 背景必须独立于中文主字体，否则某些中文字体缺 ASCII 字形会显示异常 */
   font-family: monospace;
   font-size: 10px;
   line-height: 1.4;
@@ -854,8 +1000,8 @@ body {
   border-right: 2.5px solid hsl(320 22% 58%);
   border-bottom: 2.5px solid hsl(320 22% 58%);
   color: hsl(224 48% 26%);
-  font-family: monospace;
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: var(--size-content);
   line-height: 1.5;
   text-shadow:
     0 0 3px hsl(226 55% 42% / 0.22),
@@ -893,24 +1039,25 @@ body {
   top: 0; left: 0; right: 0;
   margin: 0;
   z-index: 9;
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 13px;
   line-height: 1.2;
   color: hsl(224 50% 24%);
   background: hsl(330 32% 82%);
   border-bottom: 1px solid hsl(330 22% 65%);
-  padding: 3px 22px 3px 6px;
+  padding: 6px 22px 3px 6px;
   display: block;
   white-space: nowrap;
   text-align: left;
   box-sizing: border-box;
   text-shadow: none;
+  text-transform: uppercase;
 }
 /* 右上角心形按钮 */
 .sidebar-box-title::after {
   content: '♥';
   position: absolute;
-  top: 2px; right: 3px;
+  top: 5px; right: 3px;
   width: 15px; height: 15px;
   background: #c0c0c0;
   border: 2px solid;
@@ -1091,7 +1238,7 @@ body {
 
 /* 侧栏 CRT 方框内：导航与链接（覆盖全局蓝/粉） */
 .sidebar-box:not(.profile-mini):not(.player-widget) .nav-link {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 13px;
   color: hsl(224 48% 28%);
   text-shadow: 0 0 2px hsl(226 45% 50% / 0.15);
@@ -1112,7 +1259,7 @@ body {
   box-shadow: inset 0 0 10px hsl(226 50% 18% / 0.25);
 }
 .sidebar-box:not(.profile-mini):not(.player-widget) .social-link {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 13px;
   color: hsl(224 45% 30%);
   text-shadow: 0 0 2px hsl(226 40% 48% / 0.12);
@@ -1201,7 +1348,7 @@ body {
   position: absolute;
   bottom: 6px;
   right: 8px;
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   color: hsl(224 48% 22%);
   text-shadow: 0 0 3px hsl(226 50% 70% / 0.35);
@@ -1292,8 +1439,8 @@ body {
   border-radius: 0;
   box-shadow: none;
   color: hsl(224 48% 26%);
-  font-family: monospace;
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: var(--size-content);
   line-height: 1.65;
   text-shadow:
     0 0 3px hsl(226 55% 42% / 0.22),
@@ -1356,6 +1503,7 @@ body {
   inset: 0; /* titlebar 已在 body 外，不需要留顶部空间 */
   margin: 0;
   padding: 0;
+  /* ASCII 背景必须独立于中文主字体，否则某些中文字体缺 ASCII 字形会显示异常 */
   font-family: monospace;
   font-size: 8px;
   line-height: 1.1;
@@ -1374,23 +1522,24 @@ body {
   position: relative;
   z-index: 5;
   margin: 0;
-  font-family: monospace;
-  font-size: 13px;
+  font-family: var(--font-mono);
+  font-size: var(--size-titlebar);
   line-height: 1.2;
   color: hsl(224 50% 24%);
   background: hsl(330 32% 82%);
   border-bottom: 1px solid hsl(330 22% 65%);
-  padding: 3px 22px 3px 6px;
+  padding: 6px 22px 3px 6px;
   display: block;
   white-space: nowrap;
   text-align: left;
   box-sizing: border-box;
   text-shadow: none;
+  text-transform: uppercase;
 }
 .content-inner-titlebar::after {
   content: '♥';
   position: absolute;
-  top: 2px; right: 3px;
+  top: 5px; right: 3px;
   width: 15px; height: 15px;
   background: #c0c0c0;
   border: 2px solid;
@@ -1427,7 +1576,7 @@ body {
 .content-inner p,
 .content-inner .text-content,
 .content-inner li {
-  font-size: 16px;
+  font-size: var(--size-content);
   color: hsl(224 45% 26%);
   text-shadow:
     0 0 3px hsl(226 50% 48% / 0.18),
@@ -1437,8 +1586,8 @@ body {
   display: none;
 }
 .content-inner .section-subtitle {
-  font-family: monospace;
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: var(--size-content);
   color: hsl(224 48% 24%);
   border-bottom: 1px dashed hsl(226 25% 55%);
   text-shadow:
@@ -1447,8 +1596,8 @@ body {
 }
 .content-inner .skill-item,
 .content-inner .skill-name {
-  font-family: monospace;
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: var(--size-content);
   color: hsl(224 45% 26%);
 }
 .content-inner .skill-bar {
@@ -1476,9 +1625,9 @@ body {
   box-shadow: none;
   text-shadow: none;
 }
-.content-inner .blog-title { color: hsl(22 42% 22%); font-family: monospace; font-size: 16px; }
-.content-inner .blog-meta { font-family: monospace; font-size: 16px; color: hsl(28 18% 36%); }
-.content-inner .blog-excerpt { font-family: monospace; font-size: 16px; color: hsl(28 22% 22%); }
+.content-inner .blog-title { color: hsl(22 42% 22%); font-family: var(--font-mono); font-size: var(--size-content); }
+.content-inner .blog-meta { font-family: var(--font-mono); font-size: var(--size-content); color: hsl(28 18% 36%); }
+.content-inner .blog-excerpt { font-family: var(--font-mono); font-size: var(--size-content); color: hsl(28 22% 22%); }
 .content-inner .blog-read-more {
   color: hsl(22 48% 28%);
   border-bottom-color: hsl(32 25% 40%);
@@ -1486,13 +1635,50 @@ body {
 }
 .content-inner .blog-read-more:hover { color: hsl(22 40% 34%); }
 .content-inner .gallery-caption {
-  font-family: monospace;
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: var(--size-content);
   color: hsl(28 30% 16%);
 }
+
+/* Projects 页：标题下的技能小标签 */
+.gallery-item.project-item {
+  display: flex;
+  flex-direction: column;
+}
+.project-card-bottom {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+.content-inner .project-card-bottom .gallery-caption {
+  flex: 1;
+}
+.project-skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 6px 8px;
+  background: hsl(38 28% 88%);
+  border-top: 1px dashed hsl(28 22% 72%);
+}
+.content-inner .project-skill-tag {
+  font-family: var(--font-mono);
+  font-size: var(--size-small);
+  line-height: 1.2;
+  padding: 3px 5px;
+  border: 1px solid hsl(28 22% 42%);
+  border-radius: 2px;
+  background: hsl(38 26% 82%);
+  color: hsl(22 32% 22%);
+  text-shadow: none;
+  white-space: nowrap;
+}
 .content-inner .sketchfab-caption {
-  font-family: monospace;
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: var(--size-content);
   color: hsl(28 28% 18%);
   background: hsl(38 22% 82%);
   border-top-color: hsl(28 18% 35%);
@@ -1503,12 +1689,17 @@ body {
 /* Blog / Projects 筛选按钮（中间区内覆盖全局粉色调） */
 .content-inner .blog-filter-tag,
 .content-inner .projects-filter-tag {
-  font-family: monospace;
-  font-size: 16px;
+  font-family: var(--font-mono);
   background: hsl(38 22% 80%);
   color: hsl(28 28% 16%);
   border: 2px solid hsl(28 20% 38%);
   text-shadow: none;
+}
+.content-inner .blog-filter-tag {
+  font-size: var(--size-content);
+}
+.content-inner .projects-filter-tag {
+  font-size: var(--size-titlebar);
 }
 .content-inner .blog-filter-tag:hover,
 .content-inner .projects-filter-tag:hover {
@@ -1532,13 +1723,13 @@ body {
 }
 .content-inner .article-title {
   color: hsl(224 48% 24%);
-  font-family: monospace;
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: var(--size-content);
   text-shadow: 0 0 3px hsl(226 45% 45% / 0.18);
 }
 .content-inner .article-desc {
-  font-family: monospace;
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: var(--size-content);
   color: hsl(224 30% 38%);
   text-shadow: 0 0 2px hsl(226 35% 50% / 0.1);
 }
@@ -1550,12 +1741,16 @@ body {
     2px 2px 0 0 rgba(30, 20, 14, 0.15);
 }
 .content-inner .tag {
-  font-family: monospace;
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: var(--size-content);
   background: hsl(38 26% 76%);
   color: hsl(22 36% 22%);
   border-color: hsl(28 18% 34%);
   text-shadow: none;
+}
+
+.about-skills.is-hidden {
+  display: none;
 }
 
 /* Page sections */
@@ -1623,11 +1818,11 @@ p, .text-content {
   color: var(--text-main);
 }
 
-/* 中间正文：与参考一致固定 16px + monospace（继承自 .content-inner） */
+/* 中间正文：字号 --size-content（继承自 .content-inner） */
 .content-inner p,
 .content-inner .text-content {
-  font-family: monospace;
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: var(--size-content);
 }
 
 /* Tags */
@@ -2038,7 +2233,7 @@ p, .text-content {
   animation: spin-circle 12s linear infinite;
 }
 .player-circle-text text {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   fill: hsl(38 42% 88%);
   letter-spacing: 2px;
@@ -2084,7 +2279,7 @@ p, .text-content {
   overflow: hidden;
   transform: translateX(12px); /* 略向东（向右） */
   padding: 2px 10px;
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 13px;
   color: hsl(34 92% 86%);
   text-shadow: 0 0 3px hsl(30 85% 62% / 0.35);
@@ -2159,8 +2354,8 @@ p, .text-content {
   display: flex;
   flex-direction: column;
   color: hsl(224 48% 26%);
-  font-family: monospace;
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: var(--size-content);
   line-height: 1.6;
   text-shadow:
     0 0 3px hsl(226 55% 42% / 0.22),
@@ -2199,7 +2394,7 @@ p, .text-content {
   text-shadow: none;
 }
 .lightbox-titlebar-text {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 13px;
   line-height: 1.2;
   color: hsl(224 50% 24%);
@@ -2244,8 +2439,8 @@ p, .text-content {
 }
 .lightbox-inner::-webkit-scrollbar-thumb:hover { background: hsl(226 42% 32%); }
 .lightbox-title {
-  font-family: monospace;
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: var(--size-content);
   color: hsl(224 48% 24%);
   margin-bottom: 10px;
   text-shadow:
@@ -2253,7 +2448,7 @@ p, .text-content {
     0 0 10px hsl(226 40% 58% / 0.12);
 }
 .lightbox-body {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 19px;
   line-height: 1.65;
   color: hsl(224 45% 26%);
@@ -2267,7 +2462,7 @@ p, .text-content {
   padding: 8px 12px;
   background: hsl(38 28% 88%);
   border: 1px dashed hsl(28 22% 38%);
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 19px;
   color: hsl(28 18% 32%);
   text-shadow: none;
@@ -2293,7 +2488,7 @@ p, .text-content {
   display: inline-block;
   margin-right: 10px;
   margin-top: 10px;
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 14px;
   color: hsl(28 28% 16%);
   border: 2px solid hsl(28 20% 38%);
@@ -2357,8 +2552,8 @@ p, .text-content {
   background: hsl(28 35% 12% / 0.85);
   color: hsl(38 45% 92%);
   border: 1px solid hsl(32 22% 38%);
-  font-family: monospace;
-  font-size: 16px;
+  font-family: var(--font-mono);
+  font-size: var(--size-content);
   width: 32px;
   height: 48px;
   cursor: pointer;
@@ -2444,7 +2639,7 @@ p, .text-content {
   display: inline-block;
   background: #1a0a20;
   color: #90D890;
-  font-family: 'Press Start 2P', monospace;
+  font-family: var(--font-mono);
   font-size: 8px;
   padding: 2px 6px;
   border-radius: var(--pixel-radius);

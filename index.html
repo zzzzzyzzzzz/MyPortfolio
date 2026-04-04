@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JoJo's Delulu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Serif+SC:wght@400;700&family=Silkscreen&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Silkscreen&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/src/style.css">
 </head>
 
@@ -51,8 +51,15 @@
     <span class="header-deco deco-flower2">*</span>
 
     <div class="lang-switch">
-      <button class="lang-btn active" onclick="switchLang('en')">EN</button>
-      <button class="lang-btn" onclick="switchLang('zh')">中文</button>
+      <label class="rocker rocker-small" aria-label="Language switch">
+        <input
+          type="checkbox"
+          id="lang-toggle-checkbox"
+          onchange="switchLang(this.checked ? 'zh' : 'en')"
+        />
+        <span class="switch-left">简</span>
+        <span class="switch-right">EN</span>
+      </label>
     </div>
   </header>
 
@@ -215,6 +222,7 @@
           <!-- luckyneko divider strip -->
           <div class="deco-strip deco-strip--luckyneko" aria-hidden="true"></div>
 
+          <div class="about-skills is-hidden" aria-hidden="true">
           <h3 class="section-subtitle" data-en="✦ Skills" data-zh="✦ 技能">✦ Skills</h3>
           <div class="skill-list">
             <div class="skill-item">
@@ -245,6 +253,7 @@
               <span class="skill-name">.NET / RESTful API</span>
               <div class="skill-bar"><div class="skill-fill" style="width:75%"></div></div>
             </div>
+          </div>
           </div>
 
 
@@ -333,31 +342,75 @@
           <div class="gallery-grid" id="projects-grid">
             <div class="gallery-item project-item" data-category="game" onclick="openProjectDetail('nt-ar')">
               <div class="gallery-thumb g8">🧭</div>
-              <div class="gallery-caption" data-en="Northwest Territories AR Tour" data-zh="西北地区 AR 导览">Northwest Territories AR Tour</div>
+              <div class="project-card-bottom">
+                <div class="gallery-caption" data-en="Northwest Territories AR Tour" data-zh="西北地区 AR 导览">Northwest Territories AR Tour</div>
+                <div class="project-skill-tags">
+                  <span class="project-skill-tag" data-en="Unity" data-zh="Unity">Unity</span>
+                  <span class="project-skill-tag" data-en="C#" data-zh="C#">C#</span>
+                  <span class="project-skill-tag" data-en="AR" data-zh="AR">AR</span>
+                </div>
+              </div>
             </div>
             <div class="gallery-item project-item" data-category="game" onclick="openProjectDetail('abstrakt')">
               <div class="gallery-thumb g10">🧩</div>
-              <div class="gallery-caption" data-en="Abstrakt" data-zh="Abstrakt · 沉浸式 VR 体验">Abstrakt</div>
+              <div class="project-card-bottom">
+                <div class="gallery-caption" data-en="Abstrakt" data-zh="Abstrakt · 沉浸式 VR 体验">Abstrakt</div>
+                <div class="project-skill-tags">
+                  <span class="project-skill-tag" data-en="Unity" data-zh="Unity">Unity</span>
+                  <span class="project-skill-tag" data-en="VR" data-zh="VR">VR</span>
+                </div>
+              </div>
             </div>
             <div class="gallery-item project-item" data-category="game" onclick="openProjectDetail('buildport-xumia')">
               <div class="gallery-thumb g9">🕹️</div>
-              <div class="gallery-caption" data-en="Buildport Xumia" data-zh="Buildport Xumia（Quest）">Buildport Xumia</div>
+              <div class="project-card-bottom">
+                <div class="gallery-caption" data-en="Buildport Xumia" data-zh="Buildport Xumia（Quest）">Buildport Xumia</div>
+                <div class="project-skill-tags">
+                  <span class="project-skill-tag" data-en="Unity" data-zh="Unity">Unity</span>
+                  <span class="project-skill-tag" data-en="VR" data-zh="VR">VR</span>
+                </div>
+              </div>
             </div>
             <div class="gallery-item project-item" data-category="game" onclick="openProjectDetail('fossa')">
               <div class="gallery-thumb g9">🦊</div>
-              <div class="gallery-caption" data-en="Fossa Finder" data-zh="Fossa Finder">Fossa Finder</div>
+              <div class="project-card-bottom">
+                <div class="gallery-caption" data-en="Fossa Finder" data-zh="Fossa Finder">Fossa Finder</div>
+                <div class="project-skill-tags">
+                  <span class="project-skill-tag" data-en="Unity" data-zh="Unity">Unity</span>
+                  <span class="project-skill-tag" data-en="VR" data-zh="VR">VR</span>
+                </div>
+              </div>
             </div>
             <div class="gallery-item project-item" data-category="shader" onclick="openProjectDetail('mirror')">
               <div class="gallery-thumb g11">🪞</div>
-              <div class="gallery-caption" data-en="Mirror Shader" data-zh="镜面着色器">Mirror Shader</div>
+              <div class="project-card-bottom">
+                <div class="gallery-caption" data-en="Mirror Shader" data-zh="镜面着色器">Mirror Shader</div>
+                <div class="project-skill-tags">
+                  <span class="project-skill-tag" data-en="Unity" data-zh="Unity">Unity</span>
+                  <span class="project-skill-tag" data-en="HLSL" data-zh="HLSL">HLSL</span>
+                </div>
+              </div>
             </div>
             <div class="gallery-item project-item" data-category="shader" onclick="openProjectDetail('stylized-urp-water')">
               <div class="gallery-thumb g11">🌊</div>
-              <div class="gallery-caption" data-en="Stylized URP Water Pipeline" data-zh="风格化 URP 水体管线">Stylized URP Water Pipeline</div>
+              <div class="project-card-bottom">
+                <div class="gallery-caption" data-en="Stylized URP Water Pipeline" data-zh="风格化 URP 水体管线">Stylized URP Water Pipeline</div>
+                <div class="project-skill-tags">
+                  <span class="project-skill-tag" data-en="Unity" data-zh="Unity">Unity</span>
+                  <span class="project-skill-tag" data-en="HLSL" data-zh="HLSL">HLSL</span>
+                  <span class="project-skill-tag" data-en="URP" data-zh="URP">URP</span>
+                </div>
+              </div>
             </div>
             <div class="gallery-item project-item" data-category="tools" onclick="openProjectDetail('maya-light')">
               <div class="gallery-thumb g12">💡</div>
-              <div class="gallery-caption" data-en="Maya Auto Light Tool" data-zh="Maya 自动灯光工具">Maya Auto Light Tool</div>
+              <div class="project-card-bottom">
+                <div class="gallery-caption" data-en="Maya Auto Light Tool" data-zh="Maya 自动灯光工具">Maya Auto Light Tool</div>
+                <div class="project-skill-tags">
+                  <span class="project-skill-tag" data-en="Maya" data-zh="Maya">Maya</span>
+                  <span class="project-skill-tag" data-en="Python" data-zh="Python">Python</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -417,10 +470,6 @@
           <a href="./ascii-canvas.html" target="_blank" class="social-link"><span class="social-icon">✦</span> ASCII Canvas</a>
           <a href="#" class="social-link"><span class="social-icon">🐙</span> GitHub</a>
           <a href="#" class="social-link"><span class="social-icon">🐦</span> Twitter</a>
-          <a href="#" class="social-link"><span class="social-icon">📺</span> YouTube</a>
-          <a href="#" class="social-link"><span class="social-icon">🎮</span> itch.io</a>
-          <a href="#" class="social-link"><span class="social-icon">💼</span> ArtStation</a>
-          <a href="#" class="social-link"><span class="social-icon">📸</span> Instagram</a>
         </div>
       </div>
 
@@ -1027,18 +1076,20 @@ let currentLang = 'en';
 function applyLangAndFont(lang) {
   document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
   if (lang === 'zh') {
-    document.body.style.fontFamily = "'JianbaoSong', 'Noto Serif SC', serif";
+    // 中文界面里英文也要用当前英文字体（Velvelyne），缺字再回退到中文字体
+    document.body.style.fontFamily = "'Velvelyne', 'MechSong-Extralight', 'JianbaoSong', 'Noto Serif SC', serif";
   } else {
-    document.body.style.fontFamily = "'Press Start 2P', 'JianbaoSong', 'Noto Serif SC', serif";
+    // 英文界面也要保证中文字符能正确回退到中文字体
+    document.body.style.fontFamily = "'Velvelyne', 'MechSong-Extralight', 'JianbaoSong', 'Noto Serif SC', serif";
   }
 }
 
 function switchLang(lang) {
   currentLang = lang;
 
-  // Update buttons
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  // Keep toggle UI in sync (checkbox drives the visual state too).
+  const cb = document.getElementById('lang-toggle-checkbox');
+  if (cb) cb.checked = lang === 'zh';
 
   // Update all elements with data-en / data-zh
   document.querySelectorAll('[data-en][data-zh]').forEach(el => {
@@ -1051,6 +1102,8 @@ function switchLang(lang) {
 
 // 首屏与默认语言一致，避免 html 仍是 zh-CN 时用错字体
 applyLangAndFont(currentLang);
+const cbInit = document.getElementById('lang-toggle-checkbox');
+if (cbInit) cbInit.checked = currentLang === 'zh';
 
 // ===== LIGHTBOX / GALLERY =====
 function openGallery(titleEn, bgClass, descEn, titleZh, descZh) {
